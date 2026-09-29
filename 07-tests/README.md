@@ -14,9 +14,13 @@
 
 ---
 
-## 当前规划子板块
+## 已确认子板块
 
-### ① Data Pipeline Tests / 数据链路测试
+### ① Data Pipeline Tests / 数据链路测试 ✅
+
+文件：
+
+`01-data-pipeline-tests.md`
 
 验证 03-data-management。
 
@@ -32,7 +36,11 @@
 
 ---
 
-### ② Search Tests / 搜索测试
+### ② Search Tests / 搜索测试 ✅
+
+文件：
+
+`02-search-tests.md`
 
 验证 04-search。
 
@@ -47,7 +55,11 @@
 
 ---
 
-### ③ Retrieval Tool Tests / 检索工具测试
+### ③ Retrieval Tool Tests / 检索工具测试 ✅
+
+文件：
+
+`03-retrieval-tool-tests.md`
 
 验证 05-retrieval-tool。
 
@@ -75,7 +87,11 @@ Price = 低优先级
 
 ---
 
-### ④ Agent Tests / Agent 测试
+### ④ Agent Tests / Agent 测试 ✅
+
+文件：
+
+`04-agent-tests.md`
 
 验证 06-agent 最终回答。
 
@@ -90,7 +106,11 @@ Price = 低优先级
 
 ---
 
-### ⑤ Regression Suite / 回归测试集
+### ⑤ Regression Suite / 回归测试集 ✅
+
+文件：
+
+`05-regression-suite.md`
 
 建立固定真实业务问题集，例如：
 
@@ -127,6 +147,4 @@ Q003
 
 ## 当前状态
 
-当前仅完成测试体系骨架。
-
-后续随着 04、05、06 完成，同步建立实际测试案例和预期结果。
+①②③④⑤ 已完成 V1 测试规则设计。后续随着真实 Product_KB 建立，逐步补充脱敏测试案例、预期结果与回归基线。
