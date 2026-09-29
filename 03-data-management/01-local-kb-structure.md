@@ -15,8 +15,8 @@ Product_Data/
 ├─ Raw_Input/
 │  └─ 原始 Excel、图片、供应商资料等
 │
-└─ Product_KB/
-   ├─ insoles/
+├─ Product_KB/
+│  ├─ insoles/
    │  ├─ F0228/
    │  │  ├─ product.md
    │  │  └─ main.jpg
@@ -25,15 +25,23 @@ Product_Data/
    │  │  └─ main.jpg
    │  └─ ...
    │
+│  ├─ shoe-care/
+│  └─ sports-support/
+│
+└─ Packaging_KB/              # 预留，V1 暂不启用
+   ├─ insoles/
    ├─ shoe-care/
-   └─ sports-support/
+   └─ other-categories/
 ```
 
 说明：
 
 - `Raw_Input/` 是原始资料入口，不作为正式检索知识库。
 - `Product_KB/` 只存已经标准化后的产品知识。
-- Product_KB 可位于本地硬盘、移动硬盘或未来的公司服务器。
+- `Packaging_KB/` 是未来独立包装知识库的预留目录，当前 V1 不要求建立或维护真实内容。
+- 包装方案未来使用独立 `Packaging_ID`，产品只保存包装编号引用。
+- Packaging_KB 内部按产品类别区分，例如鞋垫包装、鞋护理包装等。
+- Product_KB 与未来 Packaging_KB 均可位于本地硬盘、移动硬盘或未来的公司服务器。
 - Obsidian 仅可作为查看和编辑这些 Markdown 文件的工具，不是系统依赖。
 
 ---
@@ -154,7 +162,25 @@ AI 语义理解
 
 ---
 
-## 七、核心原则
+## 七、包装知识库预留边界
+
+当前 03-data-management V1 只处理 Product_KB，不处理包装资料导入、清洗和更新。
+
+未来启用包装模块时：
+
+```text
+Product_KB
+   │
+   │ Packaging_ID / Packaging_Options
+   ↓
+Packaging_KB
+```
+
+Packaging_KB 使用独立编号与独立目录，不把包装本体资料直接塞进产品 product.md。
+
+---
+
+## 八、核心原则
 
 1. 一个 SKU 一个文件夹。
 2. 一个 SKU 一个 `product.md`。
@@ -163,3 +189,4 @@ AI 语义理解
 5. 原始资料与标准化产品知识分开存储。
 6. 所有正式字段服从 01 Schema。
 7. 所有标准标签和自然语言映射服从 02 Taxonomy。
+8. 包装当前只保留 Packaging_ID 引用窗口，V1 不进入产品数据管理流程。
