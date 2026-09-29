@@ -77,6 +77,26 @@ Product_Category = 鞋垫
 
 ---
 
+### 6. Special_Features / 特殊属性（可选）
+
+用于记录普通功能标签之外的特殊技术或劳保属性。
+
+例如：
+
+- 防穿刺
+- 防静电
+- ESD
+- 绝缘
+
+说明：
+
+- 该字段为可选字段。
+- 普通鞋垫没有特殊属性时可留空。
+- 后续如出现新的特殊技术属性，可在标准词表中继续补充。
+- Special_Features 不与 Function_Tags 混用。
+
+---
+
 ## 二、Performance_Attributes / 鞋垫性能维度
 
 鞋垫类产品使用以下固定性能维度。
@@ -252,6 +272,7 @@ SKU 产品层
 ├─ Main_Image
 ├─ Function_Tags
 ├─ Scenario_Tags
+├─ Special_Features
 └─ Performance_Attributes
       ↓
       一款 SKU 可以对应多个工厂供应方案
@@ -343,6 +364,7 @@ SKU-001 + A工厂
 - 产品图片字段
 - 功能标签
 - 使用场景标签
+- Special_Features 特殊属性（可选）
 - 6 项鞋垫专属性能维度
 - SKU 与多个工厂供应方案的一对多关系
 - 工厂层价格、MOQ、材质、尺码独立维护
