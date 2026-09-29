@@ -139,9 +139,13 @@ AUTO / RULE / REVIEW / MISSING
         ↓
 关联 SKU 图片
         ↓
-生成标准 product.md 草稿
+生成符合 01 product-template.md 的 product.md 候选草稿
         ↓
 人工确认 REVIEW
+        ↓
+交给⑤ Data Validation
+        ↓
+Validation = PASS
         ↓
 写入正式 Product_KB
 ```
@@ -311,7 +315,7 @@ Product_KB/insoles/F0228/main.jpg
 
 ## 十一、输出结果
 
-③ 模块输出的是标准产品草稿。
+③ 模块输出的是“待校验的标准产品候选草稿”，本模块本身不直接绕过⑤写入正式 Product_KB。
 
 最少应包含：
 
@@ -328,6 +332,7 @@ SKU 产品层
 Factory Offer
 ├─ Factory_Name
 ├─ Material
+├─ Material_Detail
 ├─ Price
 ├─ MOQ
 ├─ Size_System
@@ -390,7 +395,9 @@ SKU 已存在
 → 再标准化
 → 再做 AI 语义理解
 → 再标记 REVIEW / MISSING
-→ 最后生成 Product_KB
+→ 生成候选 product.md
+→ 交⑤校验
+→ PASS 后写入正式 Product_KB
 ```
 
 系统目标不是“自动填满所有字段”，而是稳定地把现有产品表格转换为可检索、可维护、可追溯的标准产品知识。
