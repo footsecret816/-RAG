@@ -251,7 +251,8 @@ Packaging_Options:
 
 ```text
 Factory_Name / 工厂名称
-├─ Material / 材质
+├─ Material / 主材质
+├─ Material_Detail / 详细材质
 ├─ Price / 价格
 ├─ MOQ / 起订量
 ├─ Size_System / 尺码体系
@@ -270,6 +271,16 @@ Factory_Name / 工厂名称
 - 例如：记忆棉、PU、EVA、Gel、PORON、乳胶等。
 - 材质的标准词、英文名、行业叫法和近义词映射由 `02-taxonomy-rules/B-business-knowledge/insoles/` 管理。
 - Material 仍属于具体工厂供应方案，不提升到 SKU 产品层，因为同一 SKU 不同工厂可能使用不同材质。
+
+### Material_Detail / 详细材质
+
+- 保留原始资料中能够明确确认的详细材质、层次或组合信息。
+- 例如面布、泡棉、Gel、支撑片等实际组成说明。
+- Material_Detail 允许使用事实性自然语言，不要求压缩成单一标准词。
+- Material 与 Material_Detail 分工：
+  - `Material` 用于标准化检索；
+  - `Material_Detail` 用于保留真实产品细节。
+- 同一 SKU 不同工厂如实际用料不同，应分别记录在各自 Factory Offer 下。
 
 ### Price / 价格
 
@@ -317,6 +328,7 @@ SKU 产品层
 Factory Offer 工厂供应层
 ├─ Factory_Name
 ├─ Material
+├─ Material_Detail
 ├─ Price
 ├─ MOQ
 ├─ Size_System
@@ -372,7 +384,17 @@ SKU-001 + A工厂
 
 ---
 
-## 六、数据边界
+## 六、标准 product.md 模板
+
+正式 SKU 文件应遵守：
+
+`01-schema/product-template.md`
+
+该模板是 Product_KB 中单个 SKU 的标准输出结构，供 03-data-management 生成和维护 product.md 时使用。
+
+---
+
+## 七、数据边界
 
 本 Schema 只定义数据结构，不存放真实产品信息。
 
@@ -408,6 +430,6 @@ SKU-001 + A工厂
 - Special_Features 特殊属性（可选）
 - 6 项鞋垫专属性能维度
 - SKU 与多个工厂供应方案的一对多关系
-- 工厂层价格、MOQ、材质、尺码独立维护
+- 工厂层价格、MOQ、Material、Material_Detail、尺码独立维护
 - Material 材质作为一级重要检索字段，但仍绑定具体 Factory Offer
 - 最终检索粒度为 SKU + Factory Offer
