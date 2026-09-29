@@ -51,10 +51,13 @@ Product SKU + Factory Offer + Packaging SKU
 7. `07-tests/`  
    验证数据链路、搜索、Retrieval Tool、Agent 与回归稳定性。
 
-8. `adapters/`  
+8. `skills/`  
+   可安装、可迁移的标准 Skill 包；当前包含产品知识检索 Skill。
+
+9. `adapters/`  
    Accio Work、WorkBuddy、Codex、DeepSeek Harness、Claude 等平台适配层。
 
-9. `docs/`  
+10. `docs/`  
    总体架构、数据流、部署和管理员操作说明。
 
 ## 核心数据流
@@ -148,3 +151,15 @@ Change_Set
 ```
 
 不同平台的安装、Skill、MCP、API 或配置差异统一放入 `adapters/`。
+
+
+## 可安装 Skill
+
+当前标准 Skill：
+
+```text
+skills/product-knowledge-retrieval/
+└─ SKILL.md
+```
+
+该 Skill 可作为“润通业务 AI 助理”的产品知识检索能力，也可以独立挂载到其他 Agent。
