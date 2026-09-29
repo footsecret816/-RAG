@@ -37,11 +37,12 @@
 
 ## 二、结构检查
 
-检查 Product_KB 结构是否符合 01 Schema。
+检查③或④生成的候选数据在写入后是否会符合 01 Schema 与 `01-schema/product-template.md`。
 
 至少包括：
 
 - Product_Category 是否存在
+- 候选 product.md 是否符合标准模板结构
 - SKU_ID 是否存在
 - SKU 文件夹是否与 SKU_ID 一致
 - product.md 是否存在
@@ -57,6 +58,7 @@
 至少包括：
 
 - Material 是否属于标准材质词
+- Material_Detail 如有内容，是否保持为来源可支持的事实性描述
 - Function_Tags 是否全部为批准标签
 - Scenario_Tags 是否全部为批准标签
 - Special_Features 是否全部为批准值
