@@ -133,3 +133,17 @@ Search Request
 ## 当前状态
 
 ①②③ 已完成 V1 规则设计。后续进入 06-agent，并在 07-tests 中逐步验证。
+
+### ④ Interface Schema / 统一机器接口 ✅
+
+文件：
+
+`04-interface-schema.md`
+
+负责统一：
+
+- Search_Request
+- Search_Result
+- Change_Set
+
+不同平台先适配到统一接口，再进入核心检索链路。
