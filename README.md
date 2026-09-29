@@ -2,82 +2,136 @@
 
 这是一套**平台无关**的企业产品知识库与智能检索系统。
 
-目标：
-- 让业务员通过自然语言提出产品需求；
-- 系统从真实产品知识库中检索合适的产品；
-- 同一 SKU 可以关联多个工厂供应方案；
-- 为未来独立 Packaging_KB 预留 Packaging_ID 引用接口；
-- 支持 MOQ、价格、材质、尺码等硬条件筛选；
-- 支持功能、场景、相似定位等模糊语义检索；
-- 最终以“SKU + 工厂供应方案”的粒度返回结果；
-- 整套系统可接入不同智能体平台的 Agent。
+目标是让业务员使用自然语言查询公司真实产品库，并稳定返回具体的产品与供应方案。
 
-## 当前总体架构
+## 核心目标
+
+```text
+业务需求
+↓
+找到合适 Product SKU
+↓
+找到具体 Factory Offer
+↓
+未来可继续关联 Packaging SKU
+```
+
+当前产品检索粒度：
+
+```text
+Product SKU + Factory Offer
+```
+
+未来完整业务方案：
+
+```text
+Product SKU + Factory Offer + Packaging SKU
+```
+
+## 系统结构
 
 1. `01-schema/`  
-   产品数据结构标准。定义 SKU 产品层与 Factory Offer 工厂供应层。
+   定义产品数据结构和标准 product.md 模板。
 
 2. `02-taxonomy-rules/`  
-   标签体系与业务规则。包括功能、场景、尺码/市场映射、检索条件解释等。
+   定义标准词、自然语言映射、硬软条件和业务规则。
 
 3. `03-data-management/`  
-   产品数据新增、修改、删除、校验与索引更新机制。
+   负责产品资料导入、更新、校验、正式写库与 Change Set。
 
 4. `04-search/`  
-   检索引擎。包括 Metadata 精确筛选、关键词检索、Vector 语义检索与 Ranking 排序。
+   负责 Search Object、索引同步、混合检索与排序。
 
 5. `05-retrieval-tool/`  
-   产品检索工具。把底层检索能力封装成 Agent 可调用的统一工具。
+   把自然语言转换成标准 Search Request，并调用 04。
 
 6. `06-agent/`  
-   Agent 调用逻辑、指令与输出格式。
+   业务使用入口。默认查询；明确维护请求才转 03。
 
 7. `07-tests/`  
-   测试问题、标准结果与检索效果评估。
+   验证数据链路、搜索、Retrieval Tool、Agent 与回归稳定性。
 
 8. `docs/`  
-   系统架构、实施说明、更新记录等文档。
+   总体架构、数据流、部署和管理员操作说明。
+
+## 核心数据流
+
+```text
+原始产品表格 + 图片
+↓
+03 Data Management
+↓
+Product_KB
+↓
+04 Search Engine
+↓
+05 Retrieval Tool
+↓
+06 Agent
+↓
+业务员
+```
 
 ## 数据边界
 
-真实产品数据不进入本仓库。
+真实业务数据不进入本 GitHub 仓库。
 
-实际产品资料应独立保存在本地或公司指定存储位置。包装资料未来使用独立 Packaging_KB 管理，并通过 Packaging_ID 与产品关联。
-
-产品库例如：
+建议实际存储：
 
 ```text
-Product_KB/
-├── SKU-001/
-│   ├── product.md
-│   └── main.jpg
-├── SKU-002/
-│   ├── product.md
-│   └── main.jpg
-└── ...
+Product_Data/
+├─ Raw_Input/
+├─ Product_KB/
+│  ├─ insoles/
+│  ├─ shoe-care/
+│  └─ ...
+└─ Packaging_KB/   # 未来预留
 ```
-
-未来包装库预留结构：
-
-```text
-Packaging_KB/
-├── insoles/
-├── shoe-care/
-└── ...
-```
-
-当前 V1 只保留包装引用窗口，不展开包装 Schema，也不要求维护 Packaging_KB 实际内容。
 
 本仓库只管理：
-- 数据结构
-- 标签与规则
-- 检索逻辑
+
+- Schema
+- Taxonomy & Rules
 - 数据管理逻辑
-- Agent 调用方式
-- 测试与文档
+- 搜索逻辑
+- Retrieval Tool 规则
+- Agent 规则
+- 测试规范
+- 系统文档
+
+## Packaging_KB
+
+包装作为独立知识对象管理。
+
+每个包装未来拥有独立：
+
+```text
+Packaging_SKU
+```
+
+产品通过：
+
+```text
+Packaging_Options
+```
+
+引用可关联的 Packaging_SKU。
+
+当前 V1 只保留接口，不展开 Packaging_KB 内部 Schema。
 
 ## 当前状态
 
-当前为 **V0 架构骨架版**。
+**V1 架构与规则设计已完成。**
 
-后续按模块逐步设计、测试并更新。
+已完成 01～07 的 V1 规则设计和系统级文档。
+
+下一阶段重点：
+
+```text
+建立真实 Product_KB
+→ 实现可执行 Search / Retrieval Tool
+→ 用真实脱敏案例跑 07 Tests
+→ 根据测试结果迭代
+```
+
+本项目保持平台无关，避免把核心产品知识和检索逻辑绑定到单一 Agent 平台。
