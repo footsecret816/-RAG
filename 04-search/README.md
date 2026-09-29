@@ -14,18 +14,22 @@ SKU + Factory Offer
 
 ## 当前规划子板块
 
-### ① Search Record Model / 搜索记录模型
+### ① Search Object Model / 搜索对象模型 ✅
 
-负责定义 Product_KB 如何转换成可检索记录。
+文件：
 
-核心原则：
+`01-search-object-model.md`
 
-- 每个 `SKU + Factory_Name` 形成一个独立搜索记录。
-- 产品层字段可被各 Factory Offer 继承。
-- 工厂层字段必须保留各自真实值。
-- Main_Image 继续关联 SKU 产品图。
-- 当前 V1 只处理 Product_KB。
-- 未来 Packaging_KB 如启用，应通过独立 Packaging_ID / Packaging_Options 关系扩展，不把包装本体直接混入当前搜索记录。
+负责定义 Product_KB 如何转换成可检索对象。
+
+已确认：
+
+- Product_KB 是真实数据源，Search Record 是派生数据。
+- 产品搜索粒度为 `Product SKU + Factory Offer`。
+- 同一 SKU 多工厂展开成多条 Product_Offer_Record。
+- 产品层字段继承到每条 Factory Offer 搜索记录。
+- Packaging_Options 只保存 Packaging_SKU 引用，不提前展开组合。
+- 最终业务结果可动态组合为 `Product SKU + Factory Offer + Packaging SKU`。
 
 ---
 
@@ -114,4 +118,4 @@ Change Set
 
 当前仅完成模块职责与结构校正。
 
-后续按①②③④逐步细化和测试。
+①已确认。后续按②③④继续细化和测试。
