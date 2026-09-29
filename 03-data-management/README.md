@@ -13,13 +13,15 @@
         ↓
 AI 语义理解
         ↓
+生成标准化候选草稿
+        ↓
 必要字段人工确认
         ↓
-标准化 Product_KB
+⑤ 数据校验
         ↓
-数据校验
+PASS
         ↓
-写入 Product_KB
+写入正式 Product_KB
         ↓
 生成 Change Set
         ↓
@@ -69,7 +71,7 @@ AI 语义理解
 - Material、标签和尺码标准化
 - AI 从产品特性描述中提取功能、场景和性能候选
 - REVIEW / MISSING 标记
-- 生成标准 product.md 草稿
+- 生成符合 01 product-template.md 的标准 product.md 候选草稿
 
 ### ④ Product Maintenance / 增量更新与覆盖 ✅
 
@@ -85,7 +87,7 @@ AI 语义理解
 - 空白字段保护：空白不覆盖旧值
 - 新图片确认后替换
 - 删除必须由操作者明确发起
-- 所有覆盖动作先展示差异、人工确认后写入
+- 所有变更先展示差异并人工确认，再交⑤校验；PASS 后才正式写入
 
 ### ⑤ Data Validation / 数据校验 ✅
 
