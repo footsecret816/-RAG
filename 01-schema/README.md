@@ -87,7 +87,7 @@ Product_Category = 鞋垫
 未来包装采用独立知识库管理，每个包装方案拥有独立唯一编号：
 
 ```text
-Packaging_ID
+Packaging_SKU
 ```
 
 产品只保存可关联的包装编号，例如：
@@ -104,7 +104,7 @@ Packaging_Options:
 - 包装本体资料不直接写入 product.md。
 - 包装未来由独立 `Packaging_KB` 管理。
 - Packaging_KB 内部再按产品类别区分，例如鞋垫包装、鞋护理包装等。
-- 当前阶段只预留 ID 引用关系，不提前定义包装材质、尺寸、印刷、价格等内部 Schema。
+- 当前阶段只预留 Packaging_SKU 引用关系，不提前定义包装材质、尺寸、印刷、价格等内部 Schema。
 - 包装不放入 Factory Offer 普通字段中，避免把独立包装知识塞进产品供应信息。
 
 ---
@@ -411,7 +411,7 @@ SKU-001 + A工厂
 
 真实产品数据由独立的 Product_KB 存储。
 
-未来包装数据由独立的 Packaging_KB 存储，并通过 Packaging_ID 与产品建立引用关系。当前 V1 仅保留该扩展窗口，不启用包装数据维护流程。
+未来包装数据由独立的 Packaging_KB 存储，并通过 Packaging_SKU 与产品建立引用关系。当前 V1 仅保留该扩展窗口，不启用包装数据维护流程。
 
 ---
 
