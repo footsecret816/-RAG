@@ -8,9 +8,13 @@
 
 ---
 
-## 当前规划子板块
+## 已确认子板块
 
-### ① Tool Contract / 工具接口
+### ① Tool Contract / 工具接口 ✅
+
+文件：
+
+`01-tool-contract.md`
 
 定义统一输入与输出。
 
@@ -40,7 +44,11 @@ SKU + Factory Offer
 
 ---
 
-### ② Query Normalization / 查询标准化
+### ② Query Normalization / 查询标准化 ✅
+
+文件：
+
+`02-query-normalization.md`
 
 负责根据 02 Taxonomy & Rules，把业务员自然语言转换成标准 Search Request。
 
@@ -71,7 +79,11 @@ Price = 低
 
 ---
 
-### ③ Retrieval Orchestration / 检索调度
+### ③ Retrieval Orchestration / 检索调度 ✅
+
+文件：
+
+`03-retrieval-orchestration.md`
 
 负责：
 
@@ -120,6 +132,4 @@ Search Request
 
 ## 当前状态
 
-当前仅完成模块职责与结构校正。
-
-后续按①②③逐步细化。
+①②③ 已完成 V1 规则设计。后续进入 06-agent，并在 07-tests 中逐步验证。
