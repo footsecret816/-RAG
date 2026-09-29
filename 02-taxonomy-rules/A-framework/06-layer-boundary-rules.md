@@ -14,6 +14,7 @@
 - Main_Image
 - Function_Tags
 - Scenario_Tags
+- Special_Features
 - Performance_Attributes
 
 ## 工厂供应层
@@ -34,6 +35,7 @@
 2. 价格不能直接挂在 SKU 层。
 3. MOQ 不能直接挂在 SKU 层。
 4. 材质如果因工厂不同而变化，应记录在工厂供应层。
-5. 尺码如果因工厂不同而变化，应记录在工厂供应层。
-6. 最终检索结果应支持返回：
+5. Material 虽然属于工厂供应层，但可以作为一级重要检索条件直接查询。
+6. 尺码如果因工厂不同而变化，应记录在工厂供应层。
+7. 最终检索结果应支持返回：
    SKU + Factory_Name
