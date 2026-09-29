@@ -98,8 +98,9 @@ insoles/
 product.md
 ```
 
-字段必须遵守：
+字段和结构必须遵守：
 
+- `01-schema/product-template.md` 定义的标准 product.md 模板
 - `01-schema/` 定义的数据结构
 - `02-taxonomy-rules/` 定义的标准词与映射规则
 
