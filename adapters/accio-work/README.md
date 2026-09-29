@@ -1,46 +1,71 @@
 # Accio Work Adapter
 
-本目录用于 Accio Work 的平台适配。
+本目录只记录 Accio Work 的安装与接入方式。
 
-## 适配原则
-
-Accio Work 只作为运行或交互外壳。
-
-核心产品能力仍来自：
+核心 Skill 位于：
 
 ```text
-01 Schema
-02 Taxonomy & Rules
-03 Data Management
-04 Search
-05 Retrieval Tool
-06 Agent
-07 Tests
+skills/product-knowledge-retrieval/
 ```
 
-## 统一接口
+不要在本目录复制另一套产品规则。
 
-平台侧只需要完成：
+## 安装到 Accio Work
+
+1. 下载或 Clone 本 GitHub 仓库。
+2. 在 Accio Work 打开 Skills。
+3. 选择 Install Local Skill / Upload。
+4. 选择本地目录：
 
 ```text
-用户输入
-→ 转交 05 Retrieval Tool
-→ 使用统一 Search_Request
-→ 接收统一 Search_Result
-→ 由 06 Agent 组织最终回答
+skills/product-knowledge-retrieval/
 ```
 
-明确维护请求则转入 03 Data Management。
+5. 安装后启用该 Skill。
+6. 在“润通业务 AI 助理”等目标 Agent 中勾选 / 分配该 Skill。
+7. 用产品查询测试是否触发。
 
-## 禁止
+例如：
 
-- 在本适配层重新定义产品 Schema
-- 在本适配层重新维护标签规则
-- 在本适配层自行写另一套排序逻辑
-- 将平台专属配置写进 01～07 核心模块
+```text
+/ product-knowledge-retrieval
 
-## 当前状态
+客户要 PU 鞋垫，户外使用，MOQ 不超过 3000，
+价格不是第一优先级，有什么合适的？
+```
 
-预留适配目录。
+## Product_KB
 
-具体安装、插件、Skill、MCP、API 或运行配置，等实际部署到 Accio Work 时再按平台能力补充。
+Skill 本身不包含真实产品数据。
+
+Accio Work 运行时还需要能够访问实际：
+
+```text
+Product_KB/
+```
+
+如果 Agent 无法访问 Product_KB，只能加载规则，不能真实查产品。
+
+## 当前 V1 运行方式
+
+当前属于 Agent-driven retrieval：
+
+```text
+Accio Agent
+↓
+Product Knowledge Retrieval Skill
+↓
+读取 Product_KB
+↓
+按 Skill 规则筛选 / 排序
+↓
+返回 Product SKU + Factory Offer
+```
+
+04 Search Engine / 05 Retrieval Tool 的真正代码化版本属于下一阶段。
+
+## 平台边界
+
+Accio Work 只是一个运行平台。
+
+核心 Skill 使用标准 `SKILL.md` 结构，平台专属配置不进入 01～07。
