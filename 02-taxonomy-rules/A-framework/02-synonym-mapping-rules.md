@@ -39,5 +39,5 @@ Softness 偏向较低数值
 系统可能映射：
 
 Scenario_Tags:
-- 户外
+- 户外徒步
 - 长距离行走
