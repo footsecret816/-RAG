@@ -69,3 +69,22 @@ Packaging_SKU
 ```text
 Product SKU + Factory Offer + Packaging SKU
 ```
+
+
+## 平台适配层
+
+```text
+Accio Work ─┐
+WorkBuddy ──┤
+Codex ──────┤
+Claude ─────┤
+DeepSeek ───┤
+            ↓
+        adapters/
+            ↓
+统一 Search_Request / Search_Result
+            ↓
+        05 Retrieval Tool
+```
+
+平台专属差异只放 `adapters/`，不进入 01～07 核心模块。
