@@ -5,9 +5,11 @@
 当前拆分为：
 
 - `A-framework/`：通用规则框架，可跨产品、跨平台复用。
-- `B-business-knowledge/`：公司实际业务词库与映射知识，后续逐步建设。
+- `B-business-knowledge/`：按产品类别维护真实业务词库与映射知识。
 
-## A-framework 当前包含
+## A-framework
+
+当前包含：
 
 1. 标签定义规则
 2. 近义词与自然语言映射规则
@@ -16,26 +18,37 @@
 5. 硬条件与软条件规则
 6. 数据层级边界规则
 
-A 模块只定义“系统应该怎么理解和处理标签/查询”，不存放真实 SKU、真实工厂、真实价格或公司具体产品知识。
+## B-business-knowledge
 
-## B 模块后续内容
+B 必须先按 `Product_Category` 区分。
 
-后续将逐步加入：
-
-- 功能标签标准词表
-- 使用场景标准词表
-- 自然语言近义表达
-- 业务概念映射
-- 产品性能组合解释
-- 具体业务术语与检索规则
-
-例如：
+当前已建立：
 
 ```text
-plantar fasciitis
-→ 相关功能标签
-→ 相关性能倾向
-→ 检索排序规则
+B-business-knowledge/
+└─ insoles/
+   ├─ 01-material-mapping.md
+   ├─ 02-function-tags.md
+   ├─ 03-scenario-tags.md
+   ├─ 04-special-features.md
+   ├─ 05-performance-attributes.md
+   └─ 06-business-concept-mapping.md
 ```
 
-B 模块属于长期迭代内容，不要求一次完成。
+鞋垫类当前核心结构：
+
+```text
+Material
++
+Function
++
+Scenario
++
+Special Features
++
+Performance
++
+Business Concept Mapping
+```
+
+真实 SKU、工厂、价格、MOQ、图片等数据仍由独立 Product_KB 管理，不进入 Git。
