@@ -80,7 +80,36 @@ Product_Category = 鞋垫
 
 ---
 
-### 6. Special_Features / 特殊属性（可选）
+### 6. Packaging_Options / 包装方案引用（预留，可选）
+
+包装暂不纳入当前 V1 的实际数据维护，但在产品 Schema 中预留引用窗口。
+
+未来包装采用独立知识库管理，每个包装方案拥有独立唯一编号：
+
+```text
+Packaging_ID
+```
+
+产品只保存可关联的包装编号，例如：
+
+```text
+Packaging_Options:
+- PKG-IN-001
+- PKG-IN-005
+```
+
+说明：
+
+- Packaging_Options 当前允许为空。
+- 包装本体资料不直接写入 product.md。
+- 包装未来由独立 `Packaging_KB` 管理。
+- Packaging_KB 内部再按产品类别区分，例如鞋垫包装、鞋护理包装等。
+- 当前阶段只预留 ID 引用关系，不提前定义包装材质、尺寸、印刷、价格等内部 Schema。
+- 包装不放入 Factory Offer 普通字段中，避免把独立包装知识塞进产品供应信息。
+
+---
+
+### 7. Special_Features / 特殊属性（可选）
 
 用于记录普通功能标签之外的特殊技术或劳保属性。
 
@@ -279,6 +308,7 @@ SKU 产品层
 ├─ Main_Image
 ├─ Function_Tags
 ├─ Scenario_Tags
+├─ Packaging_Options（预留，可为空）
 ├─ Special_Features
 └─ Performance_Attributes
       ↓
@@ -350,13 +380,16 @@ SKU-001 + A工厂
 
 - 实际 SKU 数据
 - 产品图片
+- 实际包装方案数据与包装图片
 - 工厂真实供应数据
 - 真实价格
 - MOQ
 - 具体材质组合
 - 实际尺码范围
 
-真实数据由独立的 Product_KB 存储。
+真实产品数据由独立的 Product_KB 存储。
+
+未来包装数据由独立的 Packaging_KB 存储，并通过 Packaging_ID 与产品建立引用关系。当前 V1 仅保留该扩展窗口，不启用包装数据维护流程。
 
 ---
 
@@ -371,6 +404,7 @@ SKU-001 + A工厂
 - 产品图片字段
 - 功能标签
 - 使用场景标签
+- Packaging_Options 包装方案引用窗口（可选，V1 暂不启用）
 - Special_Features 特殊属性（可选）
 - 6 项鞋垫专属性能维度
 - SKU 与多个工厂供应方案的一对多关系
