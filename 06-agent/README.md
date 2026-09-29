@@ -10,9 +10,13 @@ Agent 是交互层，不是产品知识真源，也不是独立的推荐算法�
 
 ---
 
-## 当前规划子板块
+## 已确认子板块
 
-### ① Agent Policy / Agent 职责
+### ① Agent Policy / Agent 职责 ✅
+
+文件：
+
+`01-agent-policy.md`
 
 Agent 主要负责：
 
@@ -31,7 +35,11 @@ Agent 不负责：
 
 ---
 
-### ② Tool Calling Rules / 工具调用规则
+### ② Tool Calling Rules / 工具调用规则 ✅
+
+文件：
+
+`02-tool-calling-rules.md`
 
 定义：
 
@@ -45,7 +53,11 @@ Agent 应优先依赖结构化检索结果，而不是凭模型自身知识推�
 
 ---
 
-### ③ Response Format / 最终回答格式
+### ③ Response Format / 最终回答格式 ✅
+
+文件：
+
+`03-response-format.md`
 
 最终回答应尽量稳定展示：
 
@@ -97,10 +109,10 @@ Product_KB
 
 Agent 不应脱离 05 返回结果重新判断“哪个 SKU 更合适”。
 
+默认业务场景是只读产品查询；只有用户明确提供维护资料并明确要求新增、修改、替换或删除时，才转入 03 Data Management。
+
 ---
 
 ## 当前状态
 
-当前仅完成模块职责与结构校正。
-
-后续按①②③逐步细化，并在 07-tests 中验证跨平台一致性。
+①②③ 已完成 V1 规则设计。后续在 07-tests 中验证查询、维护分流和最终回答稳定性。
