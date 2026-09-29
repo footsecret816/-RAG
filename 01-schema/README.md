@@ -234,6 +234,10 @@ Factory_Name / 工厂名称
 ### Material / 材质
 
 - 记录该工厂生产这款 SKU 时实际使用的材质方案。
+- Material 是鞋垫检索中的一级重要字段，业务员可以直接按材质查询产品。
+- 例如：记忆棉、PU、EVA、Gel、PORON、乳胶等。
+- 材质的标准词、英文名、行业叫法和近义词映射由 `02-taxonomy-rules/B-business-knowledge/insoles/` 管理。
+- Material 仍属于具体工厂供应方案，不提升到 SKU 产品层，因为同一 SKU 不同工厂可能使用不同材质。
 
 ### Price / 价格
 
@@ -368,4 +372,5 @@ SKU-001 + A工厂
 - 6 项鞋垫专属性能维度
 - SKU 与多个工厂供应方案的一对多关系
 - 工厂层价格、MOQ、材质、尺码独立维护
+- Material 材质作为一级重要检索字段，但仍绑定具体 Factory Offer
 - 最终检索粒度为 SKU + Factory Offer
