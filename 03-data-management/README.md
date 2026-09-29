@@ -65,11 +65,23 @@ AI 语义理解
 - REVIEW / MISSING 标记
 - 生成标准 product.md 草稿
 
+### ④ Product Maintenance / 增量更新与覆盖 ✅
+
+文件：
+
+`04-product-maintenance.md`
+
+负责：
+
+- 已存在 SKU 的差异更新
+- 同 SKU + 同工厂的字段覆盖
+- 同 SKU + 新工厂新增 Factory Offer
+- 空白字段保护：空白不覆盖旧值
+- 新图片确认后替换
+- 删除必须由操作者明确发起
+- 所有覆盖动作先展示差异、人工确认后写入
+
 ## 后续待确认
-
-### ④ Product Maintenance / 产品维护
-
-负责已入库 SKU 和 Factory Offer 的新增、修改、删除、图片更新和变更记录。
 
 ### ⑤ Data Validation / 数据校验
 
