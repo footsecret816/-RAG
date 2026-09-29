@@ -51,7 +51,10 @@ Product SKU + Factory Offer + Packaging SKU
 7. `07-tests/`  
    验证数据链路、搜索、Retrieval Tool、Agent 与回归稳定性。
 
-8. `docs/`  
+8. `adapters/`  
+   Accio Work、WorkBuddy、Codex、DeepSeek Harness、Claude 等平台适配层。
+
+9. `docs/`  
    总体架构、数据流、部署和管理员操作说明。
 
 ## 核心数据流
@@ -135,3 +138,13 @@ Packaging_Options
 ```
 
 本项目保持平台无关，避免把核心产品知识和检索逻辑绑定到单一 Agent 平台。
+
+跨平台统一内部接口：
+
+```text
+Search_Request
+Search_Result
+Change_Set
+```
+
+不同平台的安装、Skill、MCP、API 或配置差异统一放入 `adapters/`。
