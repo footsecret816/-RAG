@@ -33,66 +33,50 @@ SKU + Factory Offer
 
 ---
 
-### ② Index Build & Change Sync / 索引建立与变更同步
+### ② Index Build & Change Sync / 索引建立与变更同步 ✅
+
+文件：
+
+`02-index-build-and-sync.md`
 
 负责：
 
 - Product_KB 首次建立搜索索引
-- 接收 03⑥ Data Change Handoff 生成的 Change Set
-- 根据实际变化更新相关搜索记录
-- 决定哪些变化需要同步 Metadata、Keyword 或未来 Vector / Embedding
-
-03 只负责告诉本模块“什么数据发生了变化”。
-
-具体索引更新逻辑由 04 负责。
+- 接收 03⑥ Change Set
+- 对 Product_Offer_Record 做增量同步
+- 当前优先支持 Metadata + Keyword
+- Vector / Embedding 作为后续增强
 
 ---
 
-### ③ Hybrid Retrieval / 混合检索
+### ③ Hybrid Retrieval / 混合检索 ✅
 
-当前方向：
+文件：
 
-```text
-Metadata 精确筛选
-+
-Keyword 关键词检索
-+
-可选 Vector 语义检索
-```
+`03-hybrid-retrieval.md`
 
-V1 不要求依赖 Vector 才能运行。
+负责：
 
-优先保证：
-
-- MOQ
-- Price
-- Material
-- Size
-- Factory
-- Function
-- Scenario
-- Performance
-
-等结构化条件可以稳定搜索。
-
-Vector / Embedding 后续用于补强模糊表达、相似产品和语义检索能力。
+- 硬条件过滤
+- Metadata 检索
+- Keyword 检索
+- Vector / Semantic Search 后续增强
+- 无完全匹配时返回最接近候选但明确冲突
 
 ---
 
-### ④ Ranking & Search Result / 排序与检索结果
+### ④ Ranking & Search Result / 排序与检索结果 ✅
 
-负责执行 02 Taxonomy & Rules 已定义的：
+文件：
 
-- 硬条件
-- 软条件
-- 优先级
-- 排序偏好
+`04-ranking-and-search-result.md`
 
-核心规则：
+负责：
 
-- 硬条件不能被语义相似度突破。
-- 没有完全满足全部硬条件时，必须明确标记“无完全匹配”。
-- 最终结果必须保留具体 Factory Offer，不能只返回 SKU。
+- 按硬条件、用户优先级、软条件和语义相似度排序
+- 输出标准 Product SKU + Factory Offer 结果
+- 返回 Match_Reasons 与 Unmet_Conditions
+- 返回 Packaging_Options 引用，为未来 Packaging SKU 组合留接口
 
 ---
 
@@ -118,4 +102,4 @@ Change Set
 
 当前仅完成模块职责与结构校正。
 
-①已确认。后续按②③④继续细化和测试。
+①②③④ 已完成 V1 规则设计。后续进入 05-retrieval-tool，并在 07-tests 中逐步验证。
