@@ -17,7 +17,13 @@ AI 语义理解
         ↓
 标准化 Product_KB
         ↓
-检索索引更新
+数据校验
+        ↓
+写入 Product_KB
+        ↓
+生成 Change Set
+        ↓
+交给 04-search
 ```
 
 ## 已确认子板块
@@ -81,20 +87,41 @@ AI 语义理解
 - 删除必须由操作者明确发起
 - 所有覆盖动作先展示差异、人工确认后写入
 
-## 后续待确认
+### ⑤ Data Validation / 数据校验 ✅
 
-### ⑤ Data Validation / 数据校验
+文件：
 
-负责写入 Product_KB 前的数据完整性、合法性、重复项和 REVIEW 状态检查。
+`05-data-validation.md`
 
-### ⑥ Index Sync Rules / 索引同步规则
+负责：
 
-负责 Product_KB 变更后，Metadata、Keyword、Vector / Embedding 等检索索引如何更新。
+- 入库前结构检查
+- 标准词和值域检查
+- REVIEW / MISSING 状态检查
+- SKU + Factory_Name 重复与关系检查
+- 空白字段误覆盖保护
+- 图片关联检查
+- 只负责校验，不主动修改数据
+
+### ⑥ Data Change Handoff / 数据变更交接 ✅
+
+文件：
+
+`06-change-handoff.md`
+
+负责：
+
+- Product_KB 成功写入后生成标准 Change Set
+- 记录哪个 SKU 发生了什么变化
+- 区分 new_sku、update、new_factory_offer、image_update、delete 等变更类型
+- 将变更事实交给 04-search
+- 不在 03 中决定 Metadata / Keyword / Vector / Embedding 如何更新
 
 ## 与其他模块关系
 
 - `01-schema/`：规定产品有哪些字段
 - `02-taxonomy-rules/`：规定字段使用什么标准词和映射规则
-- `03-data-management/`：规定真实产品资料如何进入、修改和维护
+- `03-data-management/`：规定真实产品资料如何进入、修改、校验、维护，并把数据变化交接给搜索层
+- `04-search/`：负责根据 Change Set 决定和执行具体检索索引更新
 
 真实 SKU、产品图片、工厂价格、MOQ 等业务数据不进入 GitHub。
