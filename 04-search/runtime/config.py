@@ -7,6 +7,7 @@ from pathlib import Path
 
 MODEL_ID = "intfloat/multilingual-e5-small"
 MODEL_DIMENSION = 384
+MODEL_FOLDER_NAME = "multilingual-e5-small"
 SEMANTIC_TEMPLATE_VERSION = "v1.0"
 INDEX_SCHEMA_VERSION = "v1.0"
 PRODUCT_PREFIX = "passage: "
@@ -49,6 +50,7 @@ class RuntimeConfig:
     product_kb_dir: Path
     search_index_dir: Path
     model_cache_dir: Path
+    local_model_dir: Path
     model_source: str
     model_revision: str | None
 
@@ -76,14 +78,23 @@ class RuntimeConfig:
             self.vectors_dir,
             self.meta_dir,
             self.model_cache_dir,
+            self.local_model_dir.parent,
         ):
             path.mkdir(parents=True, exist_ok=True)
 
 
 def get_config() -> RuntimeConfig:
     root = discover_product_data_root()
-    model_path = _env_path("RUNTONG_EMBEDDING_MODEL_PATH")
-    model_source = str(model_path) if model_path else MODEL_ID
+    explicit_model_path = _env_path("RUNTONG_EMBEDDING_MODEL_PATH")
+    local_model_dir = root / "_models" / MODEL_FOLDER_NAME
+
+    if explicit_model_path:
+        model_source = str(explicit_model_path)
+    elif local_model_dir.exists() and any(local_model_dir.iterdir()):
+        model_source = str(local_model_dir)
+    else:
+        model_source = MODEL_ID
+
     revision = os.getenv("RUNTONG_EMBEDDING_MODEL_REVISION") or None
 
     cfg = RuntimeConfig(
@@ -91,6 +102,7 @@ def get_config() -> RuntimeConfig:
         product_kb_dir=root / "Product_KB",
         search_index_dir=root / "Search_Index",
         model_cache_dir=root / "_models" / "hf_cache",
+        local_model_dir=local_model_dir,
         model_source=model_source,
         model_revision=revision,
     )
