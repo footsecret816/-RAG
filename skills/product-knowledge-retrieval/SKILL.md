@@ -1,10 +1,10 @@
 ---
 name: product-knowledge-retrieval
-description: Search, compare, and recommend internal company products from an external Product_KB. Use when users ask for suitable SKUs, product recommendations, factory offers, materials, MOQ, price, size, performance, scenarios, product images, or Packaging_SKU references. Also recognize explicit product-data maintenance requests and route them through the defined maintenance flow. Never invent product facts.
-compatibility: Requires the agent runtime to have read access to the company's Product_KB folder. Product_KB is external business data and is not bundled in this skill.
+description: Search, compare, and recommend internal company products from an external Product_KB using a structured + keyword + vector hybrid retrieval flow. Also supports explicit product-data maintenance requests. Never invent product facts.
+compatibility: Requires access to Product_KB. For executable V1 retrieval, the full repository runtime under 04-search/runtime must be available to the agent environment.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.6"
+  version: "1.1.0"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -13,22 +13,26 @@ metadata:
 
 核心目标：
 
-> 根据业务员的自然语言需求，从真实 Product_KB 中找到合适的 Product SKU + Factory Offer，并给出可核对的匹配原因。
+> 根据业务员自然语言需求，从真实 Product_KB 中找到合适的 Product SKU + Factory Offer，并给出可核对的匹配结果。
+
+---
 
 ## 什么时候使用
 
-当用户提出以下任务时启用本 Skill：
+用于：
 
 - 推荐产品
-- 查找某个 SKU
+- 查找 SKU
 - 根据客户需求筛选产品
-- 比较多个产品或多个工厂方案
-- 查询材质、价格、MOQ、尺码、使用场景、性能
+- 比较多个产品或工厂方案
+- 查询材质、价格、MOQ、尺码、场景、性能
 - 查询产品图片
 - 查询 Packaging_Options / Packaging_SKU
-- 明确要求新增、修改、替换或删除产品资料
+- 明确的产品资料新增、修改、替换、删除
 
-普通公司介绍、客户背调、写邮件等非产品库任务不要调用本 Skill。
+普通公司介绍、客户背调、写邮件等任务不要调用本 Skill。
+
+---
 
 ## 数据真源
 
@@ -36,65 +40,90 @@ metadata:
 
 `Product_KB`
 
-本 Skill 自身不保存真实 SKU、真实价格、真实 MOQ、真实工厂数据。
+Skill 不保存真实 SKU、价格、MOQ 或工厂数据。
 
-如果当前运行环境无法访问 Product_KB：
+无法访问 Product_KB 时：
 
-1. 不要猜测产品信息；
-2. 提示用户连接或提供 Product_KB 路径；
+1. 不猜测；
+2. 提示连接或提供 Product_KB；
 3. 获得访问后再继续。
 
-## 查询主流程
+---
+
+## V1 检索方式
+
+完整仓库运行时存在时，默认使用：
 
 ```text
-用户自然语言
+自然语言
 ↓
-识别 Product_Category
+Search_Request
 ↓
-拆分 Hard Conditions / Soft Conditions / Priority
+04-search/runtime/search.py
 ↓
-读取 Product_KB
+结构化条件 + 关键词 + 向量混合检索
 ↓
-每个 Product SKU + Factory Offer 独立判断
-↓
-先满足硬条件
-↓
-再按用户优先级和软条件排序
-↓
-去同质化
-↓
-默认展示 Top 5
+Search_Result
 ```
 
-详细规则见：
+V1 Embedding 模型：
 
-- `references/data-model.md`
-- `references/query-rules.md`
-- `references/runtime-and-maintenance.md`
+```text
+intfloat/multilingual-e5-small
+384维
+```
 
-## 核心检索粒度
+聊天大模型可以变化，但当前索引必须统一使用同一 Embedding 模型。
 
-必须按：
+---
+
+## 查询规则
+
+先按 02 的规则拆分：
+
+```text
+Product_Category
+Hard Conditions
+Soft Conditions
+Priority
+Semantic Query
+```
+
+然后调用 04。
+
+硬条件不能被关键词或语义相似度突破。
+
+同一 SKU 多工厂必须按：
 
 ```text
 Product SKU + Factory Offer
 ```
 
-处理。
+独立判断。
 
-同一 SKU 有多个工厂时，不得把不同工厂的 Price、MOQ、Material、Size 混在一起。
+---
 
-## 硬条件规则
+## 索引初始化与更新
 
-硬条件必须满足。
+完整仓库运行时：
 
-Keyword、语义相似度或“看起来很合适”都不能突破硬条件。
+首次初始化：
 
-如果没有完全匹配：
+```bash
+python 04-search/runtime/bootstrap.py
+python 04-search/runtime/build_index.py
+python 04-search/runtime/validate_index.py
+```
 
-- 明确说明没有完全符合的结果；
-- 可以给最接近候选；
-- 必须说明具体未满足点。
+正式 Product_KB 发生明确维护变化后：
+
+```bash
+python 04-search/runtime/update_index.py
+```
+
+普通查询不得修改 Product_KB。
+
+---
 
 ## 禁止编造
 
@@ -112,21 +141,13 @@ Keyword、语义相似度或“看起来很合适”都不能突破硬条件。
 
 资料缺失就明确说缺失。
 
-## 标准结果
+---
 
-后台仍使用结构化 Search_Result。
+## 结果展示
 
-给业务员的默认展示：
+默认每个 Product_Category 最多展示 5 款。
 
-```text
-每个 Product_Category 的最多 Top 5 产品推荐表
-↓
-该品类对应的 2～3 个 Packaging 推荐
-↓
-必要提醒
-```
-
-产品表核心列：
+核心列：
 
 ```text
 产品图片
@@ -140,70 +161,23 @@ Price
 
 要求：
 
-- 不向业务员直接展示全部命中 SKU；每个 Product_Category 独立最多展示 Top 5，且不强制凑满；
-- 推荐理由必须对应当前提问；
-- 星级不是固定产品评分，也不是产品质量评分；必须直接使用 04 Search 的稳定匹配结果，Agent 不得自行改星；
-- 多候选应去同质化；
-- Main_Image 可访问时必须优先直接显示；不能默认只显示 main.jpg、文件名、附件图标或可点击预览；
-- 不同 Product_Category 动态选择关键规格；
-- Packaging 推荐放在对应品类产品表下方，默认 2～3 个；Packaging 不占产品 Top 5 名额；
-- Packaging 推荐必须显示 Packaging 图片；包装图片同样优先直接渲染；
-- Packaging_KB 未启用或无真实数据时不得编造包装；
-- 默认回答只保留推荐表、Packaging（如有）和最多一句必要提醒，不默认展开未入选原因和长分析。
+- Main_Image 可访问时优先直接显示；
+- 星级必须直接使用 04 的结果；
+- Agent 不得自行改星；
+- Top 5 是上限，不强制凑满；
+- Packaging_KB 未启用时不得编造包装；
+- 默认回答保持简短。
 
-详细规则见：
+详细规则仍以仓库中的 01～07 模块为准。
 
-- `06-agent/03-response-format.md`
-- `06-agent/04-category-display-fields.md`
+---
 
-## 产品维护
+## 平台兼容
 
-默认模式是查询。
+本 Skill 不绑定任何指定智能体平台。
 
-只有用户：
+平台专属差异只放在：
 
-1. 明确提供产品维护资料；
-2. 并明确要求新增 / 修改 / 替换 / 删除；
+`adapters/`
 
-才进入维护流程。
-
-不要因为用户在聊天里提到一个新价格或新 MOQ 就自动更新 Product_KB。
-
-维护流程见：
-
-`references/runtime-and-maintenance.md`
-
-## REVIEW 确认方式
-
-需要人工确认的候选字段必须集中展示，并给每项分配简短编号。
-
-默认优先让操作者直接回复：
-
-```text
-确认
-```
-
-如果只调整部分内容，则接受：
-
-```text
-P2=3
-去掉S2
-P=344
-S=12
-```
-
-不要要求操作者重新输入 AI 已经展示过的完整场景词或长段文字。
-
-KB 路径、价格口径等全局配置默认只确认一次。
-
-## 平台兼容原则
-
-本 Skill 不依赖 Accio Work、Codex、Claude、WorkBuddy、DeepSeek Harness 中任何一家。
-
-平台只负责：
-
-- 让 Skill 被触发；
-- 让 Agent 访问 Product_KB；
-- 提供文件读取 / 搜索能力。
-
-产品 Schema、检索规则和业务逻辑保持平台无关。
+核心产品数据结构、检索规则、向量模型规定和排序逻辑保持平台无关。
