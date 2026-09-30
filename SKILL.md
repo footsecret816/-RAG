@@ -4,7 +4,7 @@ description: Internal product knowledge retrieval and maintenance skill for comp
 compatibility: Requires access to an external Product_KB folder. Real product data is not stored in this repository.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -52,6 +52,37 @@ Product_KB
 只有用户明确要求新增、修改、替换或删除产品资料时，才进入 03 Data Management。
 
 不得因为用户在聊天中提到新价格、新 MOQ 或其他信息就自动改库。
+
+## REVIEW 确认交互
+
+产品入库时，所有需要人工确认的 REVIEW 字段应集中一次展示，并使用短编号，避免要求操作者重复输入长文字。
+
+推荐格式：
+
+```text
+性能
+P1 缓震：3
+P2 回弹：4
+P3 软硬：4
+
+场景
+S1 日常
+S2 长距离行走
+```
+
+支持最短回复：
+
+```text
+确认
+P2=3
+去掉S2
+P=344
+S=12
+```
+
+“确认”表示接受当前全部 REVIEW 候选。
+
+KB 路径、价格口径等全局配置只在首次设置或发生变化时确认，不得每个 SKU 重复询问。
 
 ## 必须遵守的核心模块
 
