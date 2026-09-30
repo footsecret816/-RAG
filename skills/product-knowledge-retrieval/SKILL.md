@@ -4,7 +4,7 @@ description: Search, compare, and recommend internal company products from an ex
 compatibility: Requires the agent runtime to have read access to the company's Product_KB folder. Product_KB is external business data and is not bundled in this skill.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.2"
+  version: "1.0.3"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -61,7 +61,9 @@ metadata:
 ↓
 再按用户优先级和软条件排序
 ↓
-输出结果
+去同质化
+↓
+默认展示 Top 5
 ```
 
 详细规则见：
@@ -86,22 +88,13 @@ Product SKU + Factory Offer
 
 硬条件必须满足。
 
-例如：
-
-```text
-PU
-MOQ <= 3000
-指定尺码
-指定特殊属性
-```
-
 Keyword、语义相似度或“看起来很合适”都不能突破硬条件。
 
 如果没有完全匹配：
 
 - 明确说明没有完全符合的结果；
 - 可以给最接近候选；
-- 必须列出 Unmet_Conditions。
+- 必须说明具体未满足点。
 
 ## 禁止编造
 
@@ -121,44 +114,46 @@ Keyword、语义相似度或“看起来很合适”都不能突破硬条件。
 
 ## 标准结果
 
-内部仍按结构化 Search_Result 返回。
+后台仍使用结构化 Search_Result。
 
-但给业务员看的最终结果必须转换成“产品卡片式”展示：
+给业务员的默认展示：
 
 ```text
-产品图片
-SKU / 简短定位
-工厂
-材质 / 详细材质
-尺码
-MOQ
-价格
-产品特点
-性能
-为什么推荐
+Top 5 产品推荐表
+↓
+2～3 个 Packaging 推荐
+↓
 必要提醒
 ```
 
-如果 Main_Image 可访问，应直接展示图片，不要只显示 `main.jpg` 文件名。
-
-普通业务员默认不要看到：
+产品表核心列：
 
 ```text
-Product_SKU:
-Factory_Offer:
-Exact_Match:
-Unmet_Conditions:
-Hard_Conditions:
-Soft_Conditions:
+产品图片
+SKU
+品类关键规格
+MOQ
+Price
+⭐本次需求匹配度
+本次推荐理由
 ```
 
-这些属于内部字段。
+要求：
 
-非完全匹配时改用自然业务语言说明具体差异。
+- 不向业务员直接展示全部命中 SKU；
+- 推荐理由必须对应当前提问；
+- 星级不是固定产品评分，也不是产品质量评分；
+- 多候选应去同质化；
+- Main_Image 可访问时直接显示；
+- 不同 Product_Category 动态选择关键规格；
+- Packaging 推荐放在产品表下方，默认 2～3 个；
+- Packaging 推荐必须显示 Packaging 图片；
+- Packaging_KB 未启用或无真实数据时不得编造包装。
 
 详细规则见：
 
-`06-agent/03-response-format.md`
+- `06-agent/03-response-format.md`
+- `06-agent/04-category-display-fields.md`
 
 ## 产品维护
 
