@@ -1,10 +1,10 @@
 ---
 name: product-knowledge-retrieval
-description: Internal product knowledge retrieval and maintenance skill for company Product_KB. Supports product ingestion from structured tables and images, normalization into Product_KB, product search, recommendation, factory-offer comparison, and explicit maintenance requests. Never invent product facts.
-compatibility: Requires access to an external Product_KB folder. Real product data is not stored in this repository.
+description: Internal product knowledge retrieval and maintenance skill for company Product_KB. Supports product ingestion, normalization, hybrid retrieval, factory-offer comparison, and explicit maintenance requests. Never invent product facts.
+compatibility: Requires access to an external Product_KB folder and a Python runtime for executable hybrid retrieval.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.6"
+  version: "1.1.0"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -18,46 +18,177 @@ metadata:
 1. 产品资料入库与维护；
 2. 业务员自然语言查询、筛选和推荐产品。
 
-真实产品数据存放在外部 `Product_KB`，本仓库只保存规则、结构、检索逻辑、Agent 规则和测试规范。
+真实产品数据放在外部 `Product_KB`。
 
-## 首次使用
+GitHub 只保存：
 
-如果当前还没有 Product_KB：
+- 数据结构；
+- 标签和业务规则；
+- 数据管理流程；
+- 可执行检索代码；
+- Agent 展示规则；
+- 测试规范。
 
-1. 让用户指定 Product_KB 存放目录；
-2. 接收固定格式产品表格 + 对应产品图片；
-3. 按 01～03 的规则提取、标准化、校验；
-4. 生成标准 `product.md`；
-5. 写入 Product_KB；
-6. 完成一批产品后，再进入检索测试。
+---
 
-## 查询流程
+## 当前 V1 可执行检索架构
 
 ```text
 业务员自然语言
 ↓
-06 Agent
+05 查询标准化
 ↓
-05 Retrieval Tool
+Search_Request JSON
 ↓
-04 Search
+04-search/runtime/search.py
 ↓
-Product_KB
+结构化条件检索
++
+关键词检索
++
+multilingual-e5-small 向量检索
 ↓
-返回 Product SKU + Factory Offer
+融合排序
+↓
+Search_Result JSON
+↓
+06 Agent 展示
 ```
 
-## 维护流程
+V1 固定向量模型：
+
+```text
+intfloat/multilingual-e5-small
+384维
+CPU运行
+```
+
+聊天大模型可以更换。
+
+同一套产品向量索引不得混用其他 Embedding 模型。
+
+---
+
+## 首次运行
+
+先确认当前环境可以访问：
+
+```text
+Product_Data/
+├─ Product_KB/
+└─ Search_Index/
+```
+
+推荐设置环境变量：
+
+```text
+RUNTONG_PRODUCT_DATA=<Product_Data绝对路径>
+```
+
+### 第一步：检查运行环境
+
+执行：
+
+```bash
+python 04-search/runtime/bootstrap.py
+```
+
+如果缺依赖，获得用户授权后执行：
+
+```bash
+python 04-search/runtime/bootstrap.py --install
+```
+
+网络慢时优先使用本地 wheel。
+
+### 第二步：准备 Embedding 模型
+
+推荐把模型提前放在：
+
+```text
+Product_Data/_models/multilingual-e5-small/
+```
+
+如果本地没有模型且允许下载：
+
+```bash
+python 04-search/runtime/bootstrap.py --download-model
+```
+
+### 第三步：首次建立索引
+
+当 Product_KB 已有正式产品资料，但 Search_Index 尚未建立时：
+
+```bash
+python 04-search/runtime/build_index.py
+```
+
+完成后执行：
+
+```bash
+python 04-search/runtime/validate_index.py
+```
+
+索引验证通过后才进入正常业务查询。
+
+---
+
+## 日常查询流程
+
+收到产品查询时：
+
+1. 按 02 的规则识别产品品类；
+2. 拆分硬条件、软条件、优先级和剩余模糊语义；
+3. 按 05 生成标准 Search_Request JSON；
+4. 调用：
+
+```bash
+python 04-search/runtime/search.py --request-json "<Search_Request JSON>"
+```
+
+5. 读取 Search_Result；
+6. 按 06 的展示规则回答。
+
+Agent 不得绕过检索结果重新凭感觉挑产品。
+
+---
+
+## 产品维护后的索引同步
 
 只有用户明确要求新增、修改、替换或删除产品资料时，才进入 03 Data Management。
 
-不得因为用户在聊天中提到新价格、新 MOQ 或其他信息就自动改库。
+完成：
+
+```text
+正式数据写入 Product_KB
++
+Validation = PASS
+```
+
+后，执行：
+
+```bash
+python 04-search/runtime/update_index.py
+```
+
+该脚本会：
+
+- 重新读取 Product_KB；
+- 复用没有语义变化的旧向量；
+- 只重新生成新增或语义变化的向量；
+- 删除失效检索记录；
+- 重建轻量 FAISS 索引；
+- 重新做完整性验证。
+
+普通查询不得修改 Product_KB。
+
+---
 
 ## REVIEW 确认交互
 
-产品入库时，所有需要人工确认的 REVIEW 字段应集中一次展示，并使用短编号，避免要求操作者重复输入长文字。
+产品入库时，所有需要人工确认的 REVIEW 字段应集中一次展示，并使用短编号。
 
-推荐格式：
+推荐：
 
 ```text
 性能
@@ -70,7 +201,7 @@ S1 日常
 S2 长距离行走
 ```
 
-支持最短回复：
+支持：
 
 ```text
 确认
@@ -80,37 +211,75 @@ P=344
 S=12
 ```
 
-“确认”表示接受当前全部 REVIEW 候选。
+KB 路径、价格口径等全局配置只在首次设置或发生变化时确认。
 
-KB 路径、价格口径等全局配置只在首次设置或发生变化时确认，不得每个 SKU 重复询问。
+---
 
 ## 必须遵守的核心模块
 
 - `01-schema/`：产品数据结构真源
 - `02-taxonomy-rules/`：标准词、自然语言映射和业务规则真源
 - `03-data-management/`：产品导入、维护、校验和 Change Set
-- `04-search/`：搜索对象、检索和排序
+- `04-search/`：检索规则和可执行检索引擎
 - `05-retrieval-tool/`：统一 Search_Request / Search_Result
 - `06-agent/`：Agent 行为与回答格式
 - `07-tests/`：测试与回归
 
-如系统级说明与具体模块冲突，以对应 01～07 模块为准。
+如上层说明与具体模块冲突，以对应 01～07 模块为准。
+
+---
+
+## 产品检索粒度
+
+固定为：
+
+```text
+Product SKU + Factory Offer
+```
+
+同一 SKU 的不同工厂方案必须独立判断。
+
+不得混用不同工厂的：
+
+- Price
+- MOQ
+- Material
+- Size
+
+---
+
+## 硬条件
+
+硬条件不能被：
+
+- 关键词命中；
+- 向量相似度；
+- Agent 主观判断；
+
+突破。
+
+如果没有完全匹配：
+
+- 明确返回无完全匹配；
+- 可以提供接近候选；
+- 必须保留未满足条件。
+
+---
 
 ## 业务员结果展示
 
-默认展示方式：
+默认：
 
 ```text
-后台全部候选
-→ 硬条件过滤
-→ 本次需求排序
+后台检索
+→ 排序
 → 去同质化
-→ 每个 Product_Category 独立最多 Top 5
-→ 各品类独立紧凑表格
-→ 每个品类下方 Packaging 推荐 2～3 个
+→ 每个 Product_Category 最多 Top 5
+→ 紧凑产品表
+→ Packaging 推荐 2～3 个（如已有真实数据）
 ```
 
-产品推荐表默认：
+产品表核心列：
 
 ```text
 图片｜SKU｜品类关键规格｜MOQ｜价格｜⭐本次需求匹配度｜本次推荐理由
@@ -118,49 +287,16 @@ KB 路径、价格口径等全局配置只在首次设置或发生变化时确�
 
 要求：
 
-- Main_Image 可访问时必须优先直接展示产品图片；不能默认只显示 main.jpg、文件名、附件图标或可点击预览；
-- 星级只表示“本次需求匹配度”，不是产品质量评分；星级必须使用 04 Search 的稳定匹配规则，不允许 Agent 临场凭感觉修改；
-- 推荐理由必须基于用户本次提问；
-- 不默认展示全部命中 SKU；每个 Product_Category 独立最多展示 Top 5，且不强制凑满；
+- Main_Image 可访问时优先直接显示产品图片；
+- 星级只表示本次需求匹配度；
+- Agent 不得自行修改 04 返回的星级；
+- Top 5 是上限，不强制凑满；
 - 大量相似候选需要去同质化；
-- 不同 Product_Category 动态选择关键规格；
-- Packaging 推荐放在对应产品品类表格下方，默认 2～3 个；Packaging 不占产品 Top 5 名额；
-- Packaging 推荐必须展示对应 Packaging 图片；包装图片同样优先直接渲染，不能只显示文件名；
+- Packaging 不占产品 Top 5；
 - Packaging_KB 没有真实数据时不得编造；
-- 默认回答保持简短：推荐表 + Packaging（如有）+ 最多一句必要提醒，不默认展开未入选长分析。
+- 默认回答保持简短。
 
-具体展示规则：
-
-- `06-agent/03-response-format.md`
-- `06-agent/04-category-display-fields.md`
-
-## 产品检索粒度
-
-必须按：
-
-```text
-Product SKU + Factory Offer
-```
-
-同一 SKU 的不同工厂供应方案必须独立判断，不得混用价格、MOQ、材质和尺码。
-
-## 包装
-
-未来包装独立使用：
-
-```text
-Packaging_KB
-Packaging_SKU
-```
-
-当前产品仅通过 `Packaging_Options` 保留 Packaging_SKU 引用。
-
-未来 Packaging_KB 启用后，推荐结果中应在产品表格下方展示 2～3 个匹配包装方案，包括：
-
-- Packaging 图片
-- Packaging_SKU
-- 包装方式
-- 基于本次客户需求的推荐理由
+---
 
 ## 数据真实性
 
@@ -178,12 +314,22 @@ Packaging_SKU
 
 缺失就明确标记缺失。
 
+---
+
 ## 平台兼容
 
-本 Skill 不绑定 Accio Work、WorkBuddy、Codex、Claude 或 DeepSeek Harness。
+本 Skill 不绑定任何一家智能体平台。
+
+任意平台只要能够：
+
+- 运行 Python；
+- 访问 Product_KB；
+- 加载 V1 Embedding 模型；
+- 持久保存 Search_Index；
+- 把 JSON 检索结果交给上层 Agent；
+
+即可复用同一套核心系统。
 
 平台专属差异只放在：
 
 `adapters/`
-
-核心规则保持平台无关。
