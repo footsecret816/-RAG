@@ -4,7 +4,7 @@ description: Internal product knowledge retrieval and maintenance skill for comp
 compatibility: Requires access to an external Product_KB folder. Real product data is not stored in this repository.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.2"
+  version: "1.0.3"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -98,33 +98,40 @@ KB 路径、价格口径等全局配置只在首次设置或发生变化时确�
 
 ## 业务员结果展示
 
-检索结果给业务员时必须使用“产品卡片式”展示，而不是直接输出内部结构字段。
-
-默认顺序：
+默认展示方式：
 
 ```text
-产品图片
-→ SKU / 简短定位
-→ 工厂 / 材质 / 尺码 / MOQ / Price
-→ 产品特点 / Performance
-→ 为什么推荐
-→ 必要提醒
+后台全部候选
+→ 硬条件过滤
+→ 本次需求排序
+→ 去同质化
+→ Top 5
+→ 紧凑表格
+→ Packaging 推荐 2～3 个
 ```
 
-如果 Main_Image 可访问，应直接展示图片，不要只输出 `main.jpg`。
-
-普通业务员默认不展示：
+产品推荐表默认：
 
 ```text
-Product_SKU
-Factory_Offer
-Exact_Match
-Unmet_Conditions
-Hard_Conditions
-Soft_Conditions
+图片｜SKU｜品类关键规格｜MOQ｜价格｜⭐本次需求匹配度｜本次推荐理由
 ```
 
-这些只保留在内部处理层。具体展示规则以 `06-agent/03-response-format.md` 为准。
+要求：
+
+- Main_Image 可访问时直接展示产品图片；
+- 星级只表示“本次需求匹配度”，不是产品质量评分；
+- 推荐理由必须基于用户本次提问；
+- 不默认展示全部命中 SKU；
+- 大量相似候选需要去同质化；
+- 不同 Product_Category 动态选择关键规格；
+- Packaging 推荐放在产品表下方，默认 2～3 个；
+- Packaging 推荐必须展示对应 Packaging 图片；
+- Packaging_KB 没有真实数据时不得编造。
+
+具体展示规则：
+
+- `06-agent/03-response-format.md`
+- `06-agent/04-category-display-fields.md`
 
 ## 产品检索粒度
 
@@ -146,6 +153,13 @@ Packaging_SKU
 ```
 
 当前产品仅通过 `Packaging_Options` 保留 Packaging_SKU 引用。
+
+未来 Packaging_KB 启用后，推荐结果中应在产品表格下方展示 2～3 个匹配包装方案，包括：
+
+- Packaging 图片
+- Packaging_SKU
+- 包装方式
+- 基于本次客户需求的推荐理由
 
 ## 数据真实性
 
