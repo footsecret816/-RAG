@@ -93,7 +93,7 @@ Heel_Cup_Depth = 待补充
 | Size_Range | AUTO | 保留实际尺码范围 |
 | Size_System | RULE | 根据明确格式转换，如 EU、US、UK、Alpha |
 | Function_Tags | RULE | AI理解原文后，只能映射到批准的标准标签；模糊时转 REVIEW |
-| Scenario_Tags | RULE | 原文有明确场景时映射；没有依据不得猜 |
+| Scenario_Tags | RULE / REVIEW | 原文明确场景时 RULE；未明确写场景但可从产品语义中合理提炼时生成标准场景候选并标记 REVIEW；完全无依据时 MISSING |
 | Special_Features | RULE | 只有原始资料明确出现时才能写入 |
 | Cushioning | REVIEW | 当前 1–5 评分存在主观性 |
 | Elasticity | REVIEW | 当前 1–5 评分存在主观性 |
@@ -156,9 +156,11 @@ Arch_Support:
 
 规则：
 
-- 必须映射到 02-B 中已经存在的标准词。
-- 原文没有表达的功能不得因为“这种材料通常具有某功能”而自动补上。
-- 若存在明显歧义，则进入 REVIEW。
+- Function_Tags 与 Scenario_Tags 都必须映射到 02-B 中已经存在的标准词。
+- Function_Tags：原文没有表达的功能，不得因为“这种材料通常具有某功能”而自动补上。
+- Scenario_Tags：允许 AI 根据整段产品语义（特性、材质、结构描述等）提炼适用场景，但只能从已批准的 Scenario_Tags 中选择。
+- 若场景不是原文明确事实，而是基于语义判断得到，必须标记为 REVIEW，待操作者确认后才能写入正式 Product_KB。
+- 只有完全缺乏语义依据时，Scenario_Tags 才标记为 MISSING。
 
 ---
 
