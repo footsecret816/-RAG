@@ -4,7 +4,7 @@ description: Search, compare, and recommend internal company products from an ex
 compatibility: Requires the agent runtime to have read access to the company's Product_KB folder. Product_KB is external business data and is not bundled in this skill.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -155,6 +155,29 @@ Unmet_Conditions
 维护流程见：
 
 `references/runtime-and-maintenance.md`
+
+## REVIEW 确认方式
+
+需要人工确认的候选字段必须集中展示，并给每项分配简短编号。
+
+默认优先让操作者直接回复：
+
+```text
+确认
+```
+
+如果只调整部分内容，则接受：
+
+```text
+P2=3
+去掉S2
+P=344
+S=12
+```
+
+不要要求操作者重新输入 AI 已经展示过的完整场景词或长段文字。
+
+KB 路径、价格口径等全局配置默认只确认一次。
 
 ## 平台兼容原则
 
