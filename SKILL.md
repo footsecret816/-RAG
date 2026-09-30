@@ -4,7 +4,7 @@ description: Internal product knowledge retrieval and maintenance skill for comp
 compatibility: Requires access to an external Product_KB folder. Real product data is not stored in this repository.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.3"
+  version: "1.0.4"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -105,9 +105,9 @@ KB 路径、价格口径等全局配置只在首次设置或发生变化时确�
 → 硬条件过滤
 → 本次需求排序
 → 去同质化
-→ Top 5
-→ 紧凑表格
-→ Packaging 推荐 2～3 个
+→ 每个 Product_Category 独立 Top 5
+→ 各品类独立紧凑表格
+→ 每个品类下方 Packaging 推荐 2～3 个
 ```
 
 产品推荐表默认：
@@ -121,10 +121,10 @@ KB 路径、价格口径等全局配置只在首次设置或发生变化时确�
 - Main_Image 可访问时直接展示产品图片；
 - 星级只表示“本次需求匹配度”，不是产品质量评分；
 - 推荐理由必须基于用户本次提问；
-- 不默认展示全部命中 SKU；
+- 不默认展示全部命中 SKU；每个 Product_Category 独立最多展示 Top 5；
 - 大量相似候选需要去同质化；
 - 不同 Product_Category 动态选择关键规格；
-- Packaging 推荐放在产品表下方，默认 2～3 个；
+- Packaging 推荐放在对应产品品类表格下方，默认 2～3 个；Packaging 不占产品 Top 5 名额；
 - Packaging 推荐必须展示对应 Packaging 图片；
 - Packaging_KB 没有真实数据时不得编造。
 
