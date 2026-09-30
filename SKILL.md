@@ -4,7 +4,7 @@ description: Internal product knowledge retrieval and maintenance skill for comp
 compatibility: Requires access to an external Product_KB folder. Real product data is not stored in this repository.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -95,6 +95,36 @@ KB 路径、价格口径等全局配置只在首次设置或发生变化时确�
 - `07-tests/`：测试与回归
 
 如系统级说明与具体模块冲突，以对应 01～07 模块为准。
+
+## 业务员结果展示
+
+检索结果给业务员时必须使用“产品卡片式”展示，而不是直接输出内部结构字段。
+
+默认顺序：
+
+```text
+产品图片
+→ SKU / 简短定位
+→ 工厂 / 材质 / 尺码 / MOQ / Price
+→ 产品特点 / Performance
+→ 为什么推荐
+→ 必要提醒
+```
+
+如果 Main_Image 可访问，应直接展示图片，不要只输出 `main.jpg`。
+
+普通业务员默认不展示：
+
+```text
+Product_SKU
+Factory_Offer
+Exact_Match
+Unmet_Conditions
+Hard_Conditions
+Soft_Conditions
+```
+
+这些只保留在内部处理层。具体展示规则以 `06-agent/03-response-format.md` 为准。
 
 ## 产品检索粒度
 
