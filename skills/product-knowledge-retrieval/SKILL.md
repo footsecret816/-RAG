@@ -4,7 +4,7 @@ description: Search, compare, and recommend internal company products from an ex
 compatibility: Requires the agent runtime to have read access to the company's Product_KB folder. Product_KB is external business data and is not bundled in this skill.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -121,23 +121,44 @@ Keyword、语义相似度或“看起来很合适”都不能突破硬条件。
 
 ## 标准结果
 
-优先返回：
+内部仍按结构化 Search_Result 返回。
+
+但给业务员看的最终结果必须转换成“产品卡片式”展示：
 
 ```text
-Product SKU
-Main Image
-Factory_Name
-Material
-Material_Detail
-Price
+产品图片
+SKU / 简短定位
+工厂
+材质 / 详细材质
+尺码
 MOQ
-Size_System / Size_Range
-Packaging_Options
-Match_Reasons
-Unmet_Conditions
+价格
+产品特点
+性能
+为什么推荐
+必要提醒
 ```
 
-根据用户问题可隐藏不相关字段，但不能改变事实。
+如果 Main_Image 可访问，应直接展示图片，不要只显示 `main.jpg` 文件名。
+
+普通业务员默认不要看到：
+
+```text
+Product_SKU:
+Factory_Offer:
+Exact_Match:
+Unmet_Conditions:
+Hard_Conditions:
+Soft_Conditions:
+```
+
+这些属于内部字段。
+
+非完全匹配时改用自然业务语言说明具体差异。
+
+详细规则见：
+
+`06-agent/03-response-format.md`
 
 ## 产品维护
 
