@@ -226,6 +226,11 @@ Function_Tags:
 - 回弹
 - 足弓支撑
 
+Scenario_Tags:
+- 日常
+- 长距离行走
+状态：REVIEW
+
 Arch_Support:
 - 轻度支撑
 
@@ -236,10 +241,12 @@ Softness:
 
 规则：
 
-1. 只能提取原文能够支持的内容。
-2. 不得因为某种材质“通常具有某功能”就自动补标签。
-3. Function_Tags 和 Scenario_Tags 必须映射到 02-B 已批准标准词。
-4. Performance 评分必须遵守 02-field-automation-levels。
+1. Function_Tags 只能提取原文能够支持的功能信息，不得因为某种材质“通常具有某功能”就自动补功能标签。
+2. Scenario_Tags 允许 AI 根据整段产品语义（特性、材质、结构描述等）推断“适合什么使用场景”。
+3. Scenario_Tags 只能从 02-B 已批准的标准场景词中选择，不允许自行创造新场景词。
+4. 原文明确写出场景时可按 RULE 标准化；基于语义推断得到的场景必须标记 REVIEW，并等待操作者确认。
+5. 只有语义不足以支持任何场景判断时，才使用 MISSING。
+6. Performance 评分必须遵守 02-field-automation-levels。
 
 ---
 
