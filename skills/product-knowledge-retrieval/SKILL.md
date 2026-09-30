@@ -4,7 +4,7 @@ description: Search, compare, and recommend internal company products from an ex
 compatibility: Requires the agent runtime to have read access to the company's Product_KB folder. Product_KB is external business data and is not bundled in this skill.
 metadata:
   author: runtong-wayyeah
-  version: "1.0.5"
+  version: "1.0.6"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -144,10 +144,10 @@ Price
 - 推荐理由必须对应当前提问；
 - 星级不是固定产品评分，也不是产品质量评分；必须直接使用 04 Search 的稳定匹配结果，Agent 不得自行改星；
 - 多候选应去同质化；
-- Main_Image 可访问时直接显示；
+- Main_Image 可访问时必须优先直接显示；不能默认只显示 main.jpg、文件名、附件图标或可点击预览；
 - 不同 Product_Category 动态选择关键规格；
 - Packaging 推荐放在对应品类产品表下方，默认 2～3 个；Packaging 不占产品 Top 5 名额；
-- Packaging 推荐必须显示 Packaging 图片；
+- Packaging 推荐必须显示 Packaging 图片；包装图片同样优先直接渲染；
 - Packaging_KB 未启用或无真实数据时不得编造包装；
 - 默认回答只保留推荐表、Packaging（如有）和最多一句必要提醒，不默认展开未入选原因和长分析。
 
