@@ -39,6 +39,7 @@ Factory_Offers:
     Material: null
     Material_Detail: null
     Price: null
+    Price_Term: null
     MOQ: null
     Size_System: null
     Size_Range: null
@@ -82,6 +83,7 @@ Factory_Offers:
     Material: PU
     Material_Detail: 事实性详细材质说明
     Price: 6.9
+    Price_Term: 散装含税含运费
     MOQ: 3000
     Size_System: EU
     Size_Range: 36-46
@@ -90,6 +92,7 @@ Factory_Offers:
     Material: PU
     Material_Detail: 另一实际材质方案
     Price: 6.3
+    Price_Term: 含税不含运费
     MOQ: 5000
     Size_System: EU
     Size_Range: 36-46
