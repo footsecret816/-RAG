@@ -1,64 +1,54 @@
 # 产品知识库与智能检索系统
 
-这是一套**平台无关**的企业产品知识库与智能检索系统。
+这是一套**平台无关、Profile 可替换**的企业产品知识库与智能检索系统。
 
-目标是让业务员使用自然语言查询公司真实产品库，并稳定返回具体的产品与供应方案。
+目标：让业务员用自然语言查询公司真实 Product_KB，并稳定返回具体 Product SKU + Factory Offer。
 
-## 核心目标
-
-```text
-业务需求
-↓
-找到合适 Product SKU
-↓
-找到具体 Factory Offer
-↓
-未来可继续关联 Packaging SKU
-```
-
-当前产品检索粒度：
+## 三层结构
 
 ```text
-Product SKU + Factory Offer
+Base Skill / Core
+↓
+Company + Product Profiles
+↓
+真实 Product_KB + Search_Index
 ```
 
-未来完整业务方案：
-
-```text
-Product SKU + Factory Offer + Packaging SKU
-```
+当前仓库默认启用润通 Profile，但润通/鞋垫专属信息应集中在 `profiles/runtong/`，Core 不应依赖这些具体业务词。
 
 ## 系统结构
 
-1. `01-schema/`  
-   定义产品数据结构和标准 product.md 模板。
+1. `01-schema/`：公共数据结构
+2. `02-taxonomy-rules/`：通用标签 / 查询规则框架
+3. `03-data-management/`：导入、更新、校验、正式写库、Change Set
+4. `04-search/`：结构化 + Keyword + Vector 混合检索与排序
+5. `05-retrieval-tool/`：Search_Request / Search_Result 接口
+6. `06-agent/`：业务使用与展示规则
+7. `07-tests/`：单元测试与真实业务回归
+8. `profiles/`：可替换的公司与产品模块
+9. `skills/`：可安装 Skill
+10. `adapters/`：Accio 等平台适配
+11. `docs/`：架构与部署说明
 
-2. `02-taxonomy-rules/`  
-   定义标准词、自然语言映射、硬软条件和业务规则。
+## 当前 active profile
 
-3. `03-data-management/`  
-   负责产品资料导入、更新、校验、正式写库与 Change Set。
+```text
+profiles/active-profile.yaml
+→ company_profile: runtong
+→ default_product_profile: insoles
+```
 
-4. `04-search/`  
-   负责 Search Object、索引同步、混合检索与排序。
+润通公司运行配置：
 
-5. `05-retrieval-tool/`  
-   把自然语言转换成标准 Search Request，并调用 04。
+```text
+profiles/runtong/company.yaml
+```
 
-6. `06-agent/`  
-   业务使用入口。默认查询；明确维护请求才转 03。
+润通鞋垫产品规则：
 
-7. `07-tests/`  
-   验证数据链路、搜索、Retrieval Tool、Agent 与回归稳定性。
-
-8. `skills/`  
-   可安装、可迁移的标准 Skill 包；当前包含产品知识检索 Skill。
-
-9. `adapters/`  
-   Accio Work、WorkBuddy、Codex、DeepSeek Harness、Claude 等平台适配层。
-
-10. `docs/`  
-   总体架构、数据流、部署和管理员操作说明。
+```text
+profiles/runtong/products/insoles/
+```
 
 ## 核心数据流
 
@@ -70,6 +60,7 @@ Product SKU + Factory Offer + Packaging SKU
 Product_KB
 ↓
 04 Search Engine
+  = structured + keyword + vector
 ↓
 05 Retrieval Tool
 ↓
@@ -80,69 +71,60 @@ Product_KB
 
 ## 数据边界
 
-真实业务数据不进入本 GitHub 仓库。
+真实业务数据不进入 GitHub。
 
-建议实际存储：
+建议运行目录：
 
 ```text
 Product_Data/
 ├─ Raw_Input/
 ├─ Product_KB/
-│  ├─ insoles/
-│  ├─ shoe-care/
-│  └─ ...
-└─ Packaging_KB/   # 未来预留
+├─ Packaging_KB/
+├─ Search_Index/
+└─ _models/
 ```
 
-本仓库只管理：
+GitHub 保存的是：
 
-- Schema
-- Taxonomy & Rules
+- Base Skill / Core
+- Company / Product Profiles
+- Schema 与规则
 - 数据管理逻辑
-- 搜索逻辑
-- Retrieval Tool 规则
+- 检索逻辑
 - Agent 规则
-- 测试规范
-- 系统文档
+- 测试与同步规范
 
-## Packaging_KB
+## Profile 替换原则
 
-包装作为独立知识对象管理。
-
-每个包装未来拥有独立：
+未来换公司或产品时，目标是：
 
 ```text
-Packaging_SKU
+Core 不改
+↓
+替换 Company Profile
+↓
+替换 Product Profile
+↓
+导入新的 Product_KB
+↓
+build_index
 ```
 
-产品通过：
+当前阶段不做复杂 Onboarding 自动化，先保证润通效果不变并完成模块边界。
+
+## 检索粒度
 
 ```text
-Packaging_Options
+Product SKU + Factory Offer
 ```
 
-引用可关联的 Packaging_SKU。
-
-当前 V1 只保留接口，不展开 Packaging_KB 内部 Schema。
-
-## 当前状态
-
-**V1 架构与规则设计已完成。**
-
-已完成 01～07 的 V1 规则设计和系统级文档。
-
-下一阶段重点：
+未来 Packaging_KB 启用后可扩展为：
 
 ```text
-建立真实 Product_KB
-→ 实现可执行 Search / Retrieval Tool
-→ 用真实脱敏案例跑 07 Tests
-→ 根据测试结果迭代
+Product SKU + Factory Offer + Packaging SKU
 ```
 
-本项目保持平台无关，避免把核心产品知识和检索逻辑绑定到单一 Agent 平台。
-
-跨平台统一内部接口：
+## 跨平台接口
 
 ```text
 Search_Request
@@ -150,16 +132,4 @@ Search_Result
 Change_Set
 ```
 
-不同平台的安装、Skill、MCP、API 或配置差异统一放入 `adapters/`。
-
-
-## 可安装 Skill
-
-当前标准 Skill：
-
-```text
-skills/product-knowledge-retrieval/
-└─ SKILL.md
-```
-
-该 Skill 可作为“润通业务 AI 助理”的产品知识检索能力，也可以独立挂载到其他 Agent。
+平台专属差异只放入 `adapters/`。
