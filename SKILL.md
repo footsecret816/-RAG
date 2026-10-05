@@ -4,7 +4,7 @@ description: Internal product knowledge retrieval and maintenance skill for comp
 compatibility: Requires access to an external Product_KB folder and a Python runtime for executable hybrid retrieval.
 metadata:
   author: runtong-wayyeah
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Product Knowledge Retrieval Skill
