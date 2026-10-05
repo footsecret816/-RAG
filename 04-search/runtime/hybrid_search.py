@@ -11,7 +11,8 @@ from keyword_index import build_query_text, keyword_score
 from ranking import (
     condition_match,
     condition_summary,
-    score_soft_conditions,
+    preference_summary,
+    score_request,
     stars_from_score,
 )
 
@@ -57,6 +58,7 @@ def search(request: dict[str, Any], top_k: int = 5, debug: bool = False) -> dict
 
     exact_match = bool(exact_pool)
     pool = exact_pool if exact_match else category_pool
+    candidate_records = [records[i] for i in pool]
 
     query_text = str(request.get("semantic_query") or "").strip()
     semantic_map: dict[int, float] = {}
@@ -82,9 +84,14 @@ def search(request: dict[str, Any], top_k: int = 5, debug: bool = False) -> dict
         kw_score = keyword_score(keyword_query, record.get("keywords", []))
         retrieval_score = 0.55 * semantic_score + 0.45 * kw_score
 
-        match_score, high_full, medium_full = score_soft_conditions(record, request)
+        match_score, high_full, medium_full, pref_details = score_request(
+            record,
+            request,
+            candidate_records,
+        )
         star_count = stars_from_score(match_score, exact_match)
         reasons, unmet = condition_summary(record, request)
+        reasons.extend(preference_summary(pref_details))
 
         result = {
             "product_sku": record["product_sku"],
@@ -106,6 +113,10 @@ def search(request: dict[str, Any], top_k: int = 5, debug: bool = False) -> dict
                 "retrieval_score": round(retrieval_score, 6),
                 "high_priority_full_count": high_full,
                 "medium_priority_full_count": medium_full,
+                "relative_preferences": [
+                    {**item, "score": round(item["score"], 6)}
+                    for item in pref_details
+                ],
             }
 
         ranked.append(
