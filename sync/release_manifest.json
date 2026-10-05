@@ -1,5 +1,5 @@
 {
-  "release": "1.2.0",
+  "release": "1.2.1",
   "repository": "footsecret816/-RAG",
   "branch": "main",
   "generated_date": "2026-10-05",
@@ -15,11 +15,11 @@
     },
     {
       "path": "01-schema/README.md",
-      "git_blob_sha1": "d6bb5a2c2e4b630348b8f85ad533228f29db76a9"
+      "git_blob_sha1": "9f8996b829809cf1915950ba8c9133b8dee01a20"
     },
     {
       "path": "01-schema/product-template.md",
-      "git_blob_sha1": "c3da52a3e67eb008d3a682dbdfa7575745124dea"
+      "git_blob_sha1": "aa9119f002e838ed093c0d5306452f0740b9c7bb"
     },
     {
       "path": "02-taxonomy-rules/README.md",
@@ -87,11 +87,11 @@
     },
     {
       "path": "03-data-management/02-field-automation-levels.md",
-      "git_blob_sha1": "767f635849041881a81d1d03a0e76e2b73c9e7bd"
+      "git_blob_sha1": "afca4857abc36d6be761205c5c1eee01243db5dd"
     },
     {
       "path": "03-data-management/03-ingestion-and-normalization.md",
-      "git_blob_sha1": "fa022c854deeed2f40688484ba35c12af4f26578"
+      "git_blob_sha1": "c18b13c139467e36b9e2f29823aa917687d125dc"
     },
     {
       "path": "03-data-management/04-product-maintenance.md",
@@ -115,19 +115,19 @@
     },
     {
       "path": "03-data-management/runtime/ingest_table.py",
-      "git_blob_sha1": "6c7e3e691db642fbcb58dc101338d36d8ae081d9"
+      "git_blob_sha1": "ad91ec78c540e5c7f169fd835a346eb67fe28400"
     },
     {
       "path": "03-data-management/runtime/patch_candidate.py",
-      "git_blob_sha1": "7cc75fdcfea5c11e209c4fa9de47af801998f515"
+      "git_blob_sha1": "ecc99235692e8a4862e6b7f505f5dd8f7d1ac33f"
     },
     {
       "path": "03-data-management/runtime/validate_candidate.py",
-      "git_blob_sha1": "cff4ee54c505b670eba91d5a1b4fb7e2aa8bdb83"
+      "git_blob_sha1": "c7a3ac6934b28c51811942eceae93249b0b5679c"
     },
     {
       "path": "03-data-management/runtime/maintenance.py",
-      "git_blob_sha1": "b8074cfb2c5c13b6f226f025e704e0e21c84657b"
+      "git_blob_sha1": "4f382d00ff4c63fdfc749082f7a1a3d9eacc31c0"
     },
     {
       "path": "03-data-management/runtime/delete_product.py",
@@ -159,7 +159,7 @@
     },
     {
       "path": "04-search/05-semantic-text-and-vector.md",
-      "git_blob_sha1": "d1ead8c5ac6c62908952f74f405bb53113a5a007"
+      "git_blob_sha1": "8a523060272849c7a3671ff1f0a26c1aebe3ee9e"
     },
     {
       "path": "04-search/06-index-storage-and-runtime.md",
@@ -303,7 +303,7 @@
     },
     {
       "path": "07-tests/runtime/test_data_management.py",
-      "git_blob_sha1": "016835ef5b8d0a37bb4e563f105983dd0a389f3f"
+      "git_blob_sha1": "b249ea693c08625a32178020b49d0420fb7bacc7"
     },
     {
       "path": "07-tests/runtime/regression_runner.py",
