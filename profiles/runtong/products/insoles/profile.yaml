@@ -142,7 +142,7 @@ performance_attributes:
       - 无支撑
       - 轻度支撑
       - 强支撑
-      - no
+      - "no"
       - light
       - strong
     column_aliases:
