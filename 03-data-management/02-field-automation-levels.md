@@ -23,6 +23,7 @@
 - Factory_Name
 - MOQ
 - Price
+- Price_Term
 
 允许做格式清洗，但不得改变原始事实。
 
