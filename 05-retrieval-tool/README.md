@@ -93,8 +93,8 @@ MOQ越低越好，贵一点没关系”
     {"field":"Softness","op":"range","value":[1,3]}
   ],
   "priority": [
-    {"field":"MOQ","level":"high"},
-    {"field":"Price","level":"low"}
+    {"field":"MOQ","level":"high","goal":"min"},
+    {"field":"Price","level":"low","goal":"min"}
   ],
   "semantic_query": ""
 }
@@ -103,6 +103,19 @@ MOQ越低越好，贵一点没关系”
 02 负责规则。
 
 05 负责执行标准化。
+
+V1 特别要求：
+
+- 能可靠映射成场景、功能、性能的自然语言，先进入 soft_conditions；
+- “越低越好 / 越高越好”写入 priority.goal；
+- priority.goal 即使没有 soft_conditions，也必须参与排序；
+- semantic_query 保留模糊语义用于向量召回，但不直接决定星级。
+
+机器校验入口：
+
+```bash
+python 05-retrieval-tool/runtime/normalize_request.py --request-json "<Search_Request JSON>"
+```
 
 ---
 
@@ -184,7 +197,8 @@ python 04-search/runtime/search.py --request-json "<Search_Request JSON>"
 
 ```text
 查询标准化规则：已定义
-统一接口：已定义
+Search_Request 机器校验：已代码化
+相对偏好 goal=min/max：已接入排序
 04 可执行混合检索：已代码化
 05 → 04 调用方式：已确定
 ```
