@@ -1,8 +1,8 @@
 # Data Model / 产品数据模型
 
-## Product 层
+## 公共 Product 层
 
-每个 SKU 至少按以下字段理解：
+每个 SKU 使用统一公共结构：
 
 ```text
 Product_Category
@@ -16,23 +16,15 @@ Performance_Attributes
 Factory_Offers
 ```
 
-Performance_Attributes 当前鞋垫包括：
+`Performance_Attributes` 的实际字段和值域属于 Product Profile，不属于 Base Skill Core。
+
+当前 active profile 由：
 
 ```text
-Cushioning: 1-5
-Elasticity: 1-5
-Softness: 1-5
-Arch_Height: 低 / 中 / 高
-Arch_Support: 无支撑 / 轻度支撑 / 强支撑
-Heel_Cup_Depth: 平 / 浅 / 中 / 深
+profiles/active-profile.yaml
 ```
 
-Softness：
-
-```text
-1 = 最硬
-5 = 最软
-```
+指定。
 
 ## Factory Offer 层
 
@@ -43,31 +35,38 @@ Factory_Name
 Material
 Material_Detail
 Price
+Price_Term
 MOQ
 Size_System
 Size_Range
 ```
 
-同一 SKU 可以有多个 Factory Offer。
+同一 SKU 可以有多个 Factory Offer；检索和推荐必须分别判断。
 
-检索和推荐时必须分别判断。
+## Product Profile
+
+产品专属内容统一位于：
+
+```text
+profiles/<company>/products/<product>/
+```
+
+包括：
+
+- 类别与目录映射
+- 材质标准词 / 别名
+- Function / Scenario / Special 标签
+- Performance 字段和值域
+- 表格列别名
+- 展示字段
+- 产品业务映射知识
 
 ## Packaging
 
 `Packaging_Options` 只保存未来独立 Packaging_KB 的 `Packaging_SKU` 引用。
 
-当前不能根据 Packaging_SKU 猜测包装的材质、尺寸、价格或工艺。
-
 ## 真实数据边界
 
-产品真实资料应位于外部 Product_KB，例如：
+真实 SKU、图片、价格、MOQ、工厂供应数据放在外部 Product_KB。
 
-```text
-Product_KB/
-└─ insoles/
-   └─ F0228/
-      ├─ product.md
-      └─ main.jpg
-```
-
-本 Skill 不把 GitHub 内的规则文档当成真实产品数据。
+GitHub 中的 Profile 是规则与配置，不是真实 SKU 数据。
