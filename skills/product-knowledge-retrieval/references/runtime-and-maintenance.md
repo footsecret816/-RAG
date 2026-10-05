@@ -144,3 +144,49 @@ S=12
 
 - 正常执行产品查询；
 - 遇到维护请求时只生成候选变更和 Diff，不声称已经写入。
+
+
+---
+
+## 七、V1 可执行维护命令
+
+完整仓库运行环境中，03 的确定性数据维护已代码化。
+
+固定表格导入：
+
+```bash
+python 03-data-management/runtime/ingest_table.py "<产品表.xlsx>"
+```
+
+REVIEW 确认后先校验：
+
+```bash
+python 03-data-management/runtime/validate_candidate.py candidate.json
+python 03-data-management/runtime/maintenance.py candidate.json
+```
+
+第二条只生成 Diff，不写库。
+
+只有用户明确确认本次变更后才执行：
+
+```bash
+python 03-data-management/runtime/maintenance.py candidate.json --commit --confirm --update-index
+```
+
+删除必须显式使用：
+
+```bash
+python 03-data-management/runtime/delete_product.py ...
+```
+
+禁止把空白单元格解释为删除。
+
+## 八、本地镜像一致性
+
+如果运行平台上的 Skill 目录不是 Git 仓库，正式测试前必须执行：
+
+```bash
+python sync/verify_sync.py
+```
+
+只有 release_manifest 中受控文件全部匹配 GitHub Blob SHA，才视为当前发布版本。
