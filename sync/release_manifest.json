@@ -1,0 +1,345 @@
+{
+  "release": "1.2.0",
+  "repository": "footsecret816/-RAG",
+  "branch": "main",
+  "generated_date": "2026-10-05",
+  "scope": "V1 controlled behavior and verification files; excludes release_manifest.json itself and all real business data/runtime indexes/model weights.",
+  "files": [
+    {
+      "path": "README.md",
+      "git_blob_sha1": "61cb404f54648b902ed6efbf8823df43e715fe8f"
+    },
+    {
+      "path": "SKILL.md",
+      "git_blob_sha1": "ae9a52d4f96fb3f0351a72f5f941493e21289e38"
+    },
+    {
+      "path": "01-schema/README.md",
+      "git_blob_sha1": "d6bb5a2c2e4b630348b8f85ad533228f29db76a9"
+    },
+    {
+      "path": "01-schema/product-template.md",
+      "git_blob_sha1": "c3da52a3e67eb008d3a682dbdfa7575745124dea"
+    },
+    {
+      "path": "02-taxonomy-rules/README.md",
+      "git_blob_sha1": "e5ff345ce0cbc95611fd45a6394b3d589d4b90ac"
+    },
+    {
+      "path": "02-taxonomy-rules/A-framework/01-tag-definition-rules.md",
+      "git_blob_sha1": "49d0a82f528cf386a62bad6a10bd23e48245b8a8"
+    },
+    {
+      "path": "02-taxonomy-rules/A-framework/02-synonym-mapping-rules.md",
+      "git_blob_sha1": "e3dcb46041e6779e774cdb6bedd70361b539a651"
+    },
+    {
+      "path": "02-taxonomy-rules/A-framework/03-query-condition-rules.md",
+      "git_blob_sha1": "d6094329b3fce11ead99ee544a0f64bf1c3953e2"
+    },
+    {
+      "path": "02-taxonomy-rules/A-framework/04-priority-rules.md",
+      "git_blob_sha1": "6fd29fc12e3bf1085c19a1e91a87bd256f0ddcec"
+    },
+    {
+      "path": "02-taxonomy-rules/A-framework/05-hard-soft-condition-rules.md",
+      "git_blob_sha1": "52fb7a1dc56c6244cb2d31169974032e8e5ff68a"
+    },
+    {
+      "path": "02-taxonomy-rules/A-framework/06-layer-boundary-rules.md",
+      "git_blob_sha1": "9ff6d59631fd673a2773bc9513c82632b7b2e4cc"
+    },
+    {
+      "path": "02-taxonomy-rules/B-business-knowledge/insoles/README.md",
+      "git_blob_sha1": "ea3e85a05618efd868b8246730f6d67b8c21d29e"
+    },
+    {
+      "path": "02-taxonomy-rules/B-business-knowledge/insoles/01-material-mapping.md",
+      "git_blob_sha1": "75d4f4423defc6cda5c1f9b81c3625656f66112e"
+    },
+    {
+      "path": "02-taxonomy-rules/B-business-knowledge/insoles/02-function-tags.md",
+      "git_blob_sha1": "8de3cdea0f88c23d42875b42b0951ad59408f2c3"
+    },
+    {
+      "path": "02-taxonomy-rules/B-business-knowledge/insoles/03-scenario-tags.md",
+      "git_blob_sha1": "dac28e9c5499301b410b096f8bf2681f6ef5987a"
+    },
+    {
+      "path": "02-taxonomy-rules/B-business-knowledge/insoles/04-special-features.md",
+      "git_blob_sha1": "78df3ff55cb1e5767b3e2e87f145d282573f5342"
+    },
+    {
+      "path": "02-taxonomy-rules/B-business-knowledge/insoles/05-performance-attributes.md",
+      "git_blob_sha1": "ccc0d38b526a4c7fe1ebef63bb59f1eda6baaec2"
+    },
+    {
+      "path": "02-taxonomy-rules/B-business-knowledge/insoles/06-business-concept-mapping.md",
+      "git_blob_sha1": "c9459e5bd665c8cef3d19797e5e0153752087c2c"
+    },
+    {
+      "path": "03-data-management/README.md",
+      "git_blob_sha1": "414df9e02e54e7a225b08263dabb08bd65eefc8b"
+    },
+    {
+      "path": "03-data-management/01-local-kb-structure.md",
+      "git_blob_sha1": "393030ad10942ecccdd96a1eac5b6268472a01f0"
+    },
+    {
+      "path": "03-data-management/02-field-automation-levels.md",
+      "git_blob_sha1": "767f635849041881a81d1d03a0e76e2b73c9e7bd"
+    },
+    {
+      "path": "03-data-management/03-ingestion-and-normalization.md",
+      "git_blob_sha1": "fa022c854deeed2f40688484ba35c12af4f26578"
+    },
+    {
+      "path": "03-data-management/04-product-maintenance.md",
+      "git_blob_sha1": "38402b829a9574426b48039314c482a5800b7039"
+    },
+    {
+      "path": "03-data-management/05-data-validation.md",
+      "git_blob_sha1": "bcb982f659a53ee1e8693999c5f5c03427775bc3"
+    },
+    {
+      "path": "03-data-management/06-change-handoff.md",
+      "git_blob_sha1": "3c6cf52ccb2b7b17dab54552e7104cd1b2ee9ace"
+    },
+    {
+      "path": "03-data-management/runtime/README.md",
+      "git_blob_sha1": "f73c17b44940009e85f8bf92b6ab76be7bedab74"
+    },
+    {
+      "path": "03-data-management/runtime/common.py",
+      "git_blob_sha1": "e2c041dc71257d169b3ea0e73fb23036a0821334"
+    },
+    {
+      "path": "03-data-management/runtime/ingest_table.py",
+      "git_blob_sha1": "6c7e3e691db642fbcb58dc101338d36d8ae081d9"
+    },
+    {
+      "path": "03-data-management/runtime/patch_candidate.py",
+      "git_blob_sha1": "7cc75fdcfea5c11e209c4fa9de47af801998f515"
+    },
+    {
+      "path": "03-data-management/runtime/validate_candidate.py",
+      "git_blob_sha1": "cff4ee54c505b670eba91d5a1b4fb7e2aa8bdb83"
+    },
+    {
+      "path": "03-data-management/runtime/maintenance.py",
+      "git_blob_sha1": "b8074cfb2c5c13b6f226f025e704e0e21c84657b"
+    },
+    {
+      "path": "03-data-management/runtime/delete_product.py",
+      "git_blob_sha1": "5c7980d0beab68ebed3deca7f5ae078a03db86d7"
+    },
+    {
+      "path": "03-data-management/runtime/requirements.txt",
+      "git_blob_sha1": "7427ea5eae328f0ba65317a47995858827f7f3f8"
+    },
+    {
+      "path": "04-search/README.md",
+      "git_blob_sha1": "5c017214e75ce35962c2acde4a534e5aa8922796"
+    },
+    {
+      "path": "04-search/01-search-object-model.md",
+      "git_blob_sha1": "1c0dfd34e53686c6f0efca332a7901a13c16df37"
+    },
+    {
+      "path": "04-search/02-index-build-and-sync.md",
+      "git_blob_sha1": "c8100854c2f13053ca4c25fa0505714e84a9357a"
+    },
+    {
+      "path": "04-search/03-hybrid-retrieval.md",
+      "git_blob_sha1": "a42b1fed7837f93fb702f3772754949f6bc64c3c"
+    },
+    {
+      "path": "04-search/04-ranking-and-search-result.md",
+      "git_blob_sha1": "6ae8aa47e98209adb55759451b3bde01e339489f"
+    },
+    {
+      "path": "04-search/05-semantic-text-and-vector.md",
+      "git_blob_sha1": "d1ead8c5ac6c62908952f74f405bb53113a5a007"
+    },
+    {
+      "path": "04-search/06-index-storage-and-runtime.md",
+      "git_blob_sha1": "4bc9895c73965b50e67f1c918ef5603655292223"
+    },
+    {
+      "path": "04-search/runtime/README.md",
+      "git_blob_sha1": "bb32b3f119bddfae9ca5aa2484f529a6c9cae153"
+    },
+    {
+      "path": "04-search/runtime/config.py",
+      "git_blob_sha1": "3bf6380bb6e056fd9f9b868b5dadf500903e262e"
+    },
+    {
+      "path": "04-search/runtime/io_utils.py",
+      "git_blob_sha1": "36bd984048e25da35b7da7684acd7cd9517b0174"
+    },
+    {
+      "path": "04-search/runtime/product_loader.py",
+      "git_blob_sha1": "33cd56fae427b43d709a3004b99cf28ef6b954ed"
+    },
+    {
+      "path": "04-search/runtime/embedder.py",
+      "git_blob_sha1": "c876d21fe2107f8b115eaab9b0cd91a3a8a94f5e"
+    },
+    {
+      "path": "04-search/runtime/keyword_index.py",
+      "git_blob_sha1": "74324f559c5f697f18ffa9bf03ac093127ebaa3f"
+    },
+    {
+      "path": "04-search/runtime/index_store.py",
+      "git_blob_sha1": "581fffa1f2c8124caa02335f908e8843444444df"
+    },
+    {
+      "path": "04-search/runtime/ranking.py",
+      "git_blob_sha1": "6bba4eac99a6b95bf43b6340fc2940de6376ea97"
+    },
+    {
+      "path": "04-search/runtime/hybrid_search.py",
+      "git_blob_sha1": "65ec06b1b59b306c5b51b5656b4ed0cfbfb1d140"
+    },
+    {
+      "path": "04-search/runtime/validate_index.py",
+      "git_blob_sha1": "dee960113d0230e26ca0089acfd07267424be769"
+    },
+    {
+      "path": "04-search/runtime/build_index.py",
+      "git_blob_sha1": "f756a21708b400b615a59a7f21a21be2ebfff8dd"
+    },
+    {
+      "path": "04-search/runtime/update_index.py",
+      "git_blob_sha1": "e66c96108d5440788a0a844e5a4f5ac5c25c2094"
+    },
+    {
+      "path": "04-search/runtime/search.py",
+      "git_blob_sha1": "0f89382090824331f4484954736c6bb3970d26f2"
+    },
+    {
+      "path": "04-search/runtime/bootstrap.py",
+      "git_blob_sha1": "162dfda29ed06192fc5e0f34651d70eaf4072464"
+    },
+    {
+      "path": "04-search/runtime/requirements.txt",
+      "git_blob_sha1": "26ef28dd61e1ccaa95ea3794bec515d7d2af459a"
+    },
+    {
+      "path": "05-retrieval-tool/README.md",
+      "git_blob_sha1": "f15d67839dcd2036332d67f07e639a29ed9fcf68"
+    },
+    {
+      "path": "05-retrieval-tool/01-tool-contract.md",
+      "git_blob_sha1": "36e3d33c25a82c404b3ae416d7db8b07ba6fd221"
+    },
+    {
+      "path": "05-retrieval-tool/02-query-normalization.md",
+      "git_blob_sha1": "347525deae731a5662a4b7cd4d8c6dd4c3566912"
+    },
+    {
+      "path": "05-retrieval-tool/03-retrieval-orchestration.md",
+      "git_blob_sha1": "e6cbe73f5cc51f58b561514186466c869549a293"
+    },
+    {
+      "path": "05-retrieval-tool/04-interface-schema.md",
+      "git_blob_sha1": "3ea1ec620b1522101791a2a98ed634f3c3527be1"
+    },
+    {
+      "path": "05-retrieval-tool/runtime/normalize_request.py",
+      "git_blob_sha1": "ada7a5cf5f1fce20704fd118faa412698136c930"
+    },
+    {
+      "path": "06-agent/README.md",
+      "git_blob_sha1": "76bf932465a9d3d64ed9371cec0c89aabe58c9ec"
+    },
+    {
+      "path": "06-agent/01-agent-policy.md",
+      "git_blob_sha1": "7591a08f96e54d7cf42725eb875ce668a69abcc9"
+    },
+    {
+      "path": "06-agent/02-tool-calling-rules.md",
+      "git_blob_sha1": "0d462af8c1797a217778f14743dae41af666ea22"
+    },
+    {
+      "path": "06-agent/03-response-format.md",
+      "git_blob_sha1": "b8a5734f1b3eb3088447079af629b1bb3cf3e4aa"
+    },
+    {
+      "path": "06-agent/04-category-display-fields.md",
+      "git_blob_sha1": "fe5b40f63d322926e240d399cca960a6340c78b7"
+    },
+    {
+      "path": "07-tests/README.md",
+      "git_blob_sha1": "9252192b749f2f9ed270ccd4bc8259cea3aa11e8"
+    },
+    {
+      "path": "07-tests/01-data-pipeline-tests.md",
+      "git_blob_sha1": "3615e36cc176d75a9a788e5911d4e28dab40b7b4"
+    },
+    {
+      "path": "07-tests/02-search-tests.md",
+      "git_blob_sha1": "96efc0c89ba6f782edadd5d2c0ffc0a4501073bc"
+    },
+    {
+      "path": "07-tests/03-retrieval-tool-tests.md",
+      "git_blob_sha1": "dc302312ef68379478cc3fc23deec6f86fe63acb"
+    },
+    {
+      "path": "07-tests/04-agent-tests.md",
+      "git_blob_sha1": "d5777f1ac62e5ef1f58fdd8791112cda5c1f8877"
+    },
+    {
+      "path": "07-tests/05-regression-suite.md",
+      "git_blob_sha1": "ead0c4ec1c00f0b2e2988429a20a88bee5fef0aa"
+    },
+    {
+      "path": "07-tests/runtime/README.md",
+      "git_blob_sha1": "1705fbb45497cfdcd350896f4c4c33a05ae6b483"
+    },
+    {
+      "path": "07-tests/runtime/test_core.py",
+      "git_blob_sha1": "59c664fdf3e16e59fded6512ea2ca43ca7786053"
+    },
+    {
+      "path": "07-tests/runtime/test_data_management.py",
+      "git_blob_sha1": "016835ef5b8d0a37bb4e563f105983dd0a389f3f"
+    },
+    {
+      "path": "07-tests/runtime/regression_runner.py",
+      "git_blob_sha1": "05578f2d0e27694e44a7a5ff06518ba044fb8b92"
+    },
+    {
+      "path": "07-tests/runtime/regression_cases.example.json",
+      "git_blob_sha1": "96722aff31ecfd45372eba072262aeaf9e03bc7b"
+    },
+    {
+      "path": "skills/product-knowledge-retrieval/SKILL.md",
+      "git_blob_sha1": "bffd9cf757f6f52aef2f0283028d8661a8ea87c5"
+    },
+    {
+      "path": "skills/product-knowledge-retrieval/references/data-model.md",
+      "git_blob_sha1": "69e38241e5d76b108b16043af452a38a13ed6681"
+    },
+    {
+      "path": "skills/product-knowledge-retrieval/references/query-rules.md",
+      "git_blob_sha1": "e6260353e7b614dc894f0b215791a585f664d624"
+    },
+    {
+      "path": "skills/product-knowledge-retrieval/references/runtime-and-maintenance.md",
+      "git_blob_sha1": "7d8d0d3699cbe37f290b54850421a1e695c0e8ca"
+    },
+    {
+      "path": "adapters/accio-work/README.md",
+      "git_blob_sha1": "f281974ff16730db5c3680136e7756064629ca93"
+    },
+    {
+      "path": "sync/verify_sync.py",
+      "git_blob_sha1": "1f805ef39c901def079efeabc9909ada435c9ac8"
+    },
+    {
+      "path": "sync/README.md",
+      "git_blob_sha1": "bbab573b923d65429ed7d39e3f26eb27317e0bf5"
+    }
+  ]
+}
