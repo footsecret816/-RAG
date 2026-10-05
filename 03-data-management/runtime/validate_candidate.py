@@ -6,15 +6,12 @@ from pathlib import Path
 from typing import Any
 
 from common import (
-    ALLOWED_ARCH_HEIGHT,
-    ALLOWED_ARCH_SUPPORT,
     ALLOWED_FUNCTION_TAGS,
-    ALLOWED_HEEL_CUP,
     ALLOWED_MATERIALS,
     ALLOWED_SCENARIO_TAGS,
     ALLOWED_SIZE_SYSTEMS,
     ALLOWED_SPECIAL_FEATURES,
-    is_blank,
+    PERFORMANCE_RULES,
 )
 
 
@@ -41,23 +38,30 @@ def validate_product(product: dict[str, Any]) -> list[str]:
             errors.append(f"{sku}: Special_Features 非标准值：{tag}")
 
     perf = product.get("Performance_Attributes") or {}
-    for key in ("Cushioning", "Elasticity", "Softness"):
+    for key, rule in PERFORMANCE_RULES.items():
         value = perf.get(key)
-        if value is not None and value != "":
+        if value in (None, ""):
+            continue
+
+        rule_type = str(rule.get("type") or "").casefold()
+        if rule_type == "number":
             try:
                 num = float(value)
             except (TypeError, ValueError):
-                errors.append(f"{sku}: {key} 必须是 1-5")
-            else:
-                if num < 1 or num > 5:
-                    errors.append(f"{sku}: {key} 超出 1-5")
+                errors.append(f"{sku}: {key} 必须为数值")
+                continue
 
-    if perf.get("Arch_Height") not in (None, "", *ALLOWED_ARCH_HEIGHT):
-        errors.append(f"{sku}: Arch_Height 非标准值：{perf.get('Arch_Height')}")
-    if perf.get("Arch_Support") not in (None, "", *ALLOWED_ARCH_SUPPORT):
-        errors.append(f"{sku}: Arch_Support 非标准值：{perf.get('Arch_Support')}")
-    if perf.get("Heel_Cup_Depth") not in (None, "", *ALLOWED_HEEL_CUP):
-        errors.append(f"{sku}: Heel_Cup_Depth 非标准值：{perf.get('Heel_Cup_Depth')}")
+            minimum = rule.get("min")
+            maximum = rule.get("max")
+            if minimum is not None and num < float(minimum):
+                errors.append(f"{sku}: {key} 低于允许范围")
+            if maximum is not None and num > float(maximum):
+                errors.append(f"{sku}: {key} 超出允许范围")
+
+        elif rule_type == "enum":
+            allowed = set(rule.get("allowed") or [])
+            if value not in allowed:
+                errors.append(f"{sku}: {key} 非标准值：{value}")
 
     offers = product.get("Factory_Offers") or []
     if not offers:
