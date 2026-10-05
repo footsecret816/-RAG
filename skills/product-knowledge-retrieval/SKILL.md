@@ -4,7 +4,7 @@ description: Search, compare, and recommend internal company products from an ex
 compatibility: Requires access to Product_KB. For executable V1 retrieval, the full repository runtime under 04-search/runtime must be available to the agent environment.
 metadata:
   author: runtong-wayyeah
-  version: "1.2.0"
+  version: "1.3.0-rc1"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -50,6 +50,22 @@ Skill 不保存真实 SKU、价格、MOQ 或工厂数据。
 
 ---
 
+## Profile 边界
+
+当前公司与产品专属规则由：
+
+```text
+profiles/active-profile.yaml
+```
+
+选择。
+
+Base Skill Core 不应写死公司名、产品材质、功能标签、场景标签、性能字段或显示字段。
+
+当前默认仍是润通鞋垫 Profile，所以现有业务效果保持不变。
+
+---
+
 ## V1 检索方式
 
 完整仓库运行时存在时，默认使用：
@@ -79,7 +95,7 @@ intfloat/multilingual-e5-small
 
 ## 查询规则
 
-先按 02 的规则拆分：
+先按 02 通用规则 + active Product Profile 拆分：
 
 ```text
 Product_Category
@@ -203,7 +219,7 @@ Price
 - Packaging_KB 未启用时不得编造包装；
 - 默认回答保持简短。
 
-详细规则仍以仓库中的 01～07 模块为准。
+详细规则以 01～07 通用模块 + 当前 active Profile 为准。
 
 ---
 
