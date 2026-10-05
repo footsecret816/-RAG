@@ -4,7 +4,7 @@ description: Internal product knowledge retrieval and maintenance skill for comp
 compatibility: Requires access to an external Product_KB folder and a Python runtime for executable hybrid retrieval.
 metadata:
   author: runtong-wayyeah
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -146,10 +146,17 @@ python 04-search/runtime/validate_index.py
 python 04-search/runtime/search.py --request-json "<Search_Request JSON>"
 ```
 
-5. 读取 Search_Result；
-6. 按 06 的展示规则回答。
+7. 读取 Search_Result；
+8. 按 06 的展示规则回答。
 
 Agent 不得绕过检索结果重新凭感觉挑产品。
+
+查询标准化特别规则：
+
+- “每天站8小时，想脚底没那么累”不能只留给向量；应尽量映射为“长时间站立 + 缓震 / 抗疲劳减压”等软条件，同时保留原始模糊语义给向量；
+- “MOQ越低越好”使用 `{"field":"MOQ","level":"high","goal":"min"}`；
+- “价格贵一点没关系”可使用 `{"field":"Price","level":"low","goal":"min"}`；
+- priority.goal 即使没有 soft_conditions，也会进入本次匹配分和排序。
 
 ---
 
