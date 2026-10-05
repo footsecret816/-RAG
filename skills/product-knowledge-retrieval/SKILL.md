@@ -4,7 +4,7 @@ description: Search, compare, and recommend internal company products from an ex
 compatibility: Requires access to Product_KB. For executable V1 retrieval, the full repository runtime under 04-search/runtime must be available to the agent environment.
 metadata:
   author: runtong-wayyeah
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Product Knowledge Retrieval Skill

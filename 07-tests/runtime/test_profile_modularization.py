@@ -25,6 +25,7 @@ from common import (
     normalize_material,
     normalize_size_system,
 )
+from product_loader import load_product_file
 
 
 class ProfileModularizationTests(unittest.TestCase):
@@ -81,6 +82,50 @@ class ProfileModularizationTests(unittest.TestCase):
                     text,
                     msg=f"{path.relative_to(REPO_ROOT)} 仍硬编码业务值：{literal}",
                 )
+
+    def test_no_support_does_not_emit_positive_arch_support_keyword(self):
+        import tempfile
+
+        product_md = """---
+Product_Category: 鞋垫
+SKU_ID: NEG001
+Main_Image: main.jpg
+Packaging_Options: []
+Function_Tags: []
+Scenario_Tags: []
+Special_Features: []
+Performance_Attributes:
+  Cushioning: 3
+  Elasticity: 3
+  Softness: 3
+  Arch_Height: medium
+  Arch_Support: 无支撑
+  Heel_Cup_Depth: shallow
+Factory_Offers:
+  - Factory_Name: 工厂A
+    Material: PU
+    Material_Detail: PU
+    Price: 5.0
+    Price_Term: EXW
+    MOQ: 1000
+    Size_System: EU
+    Size_Range: 36-46
+---
+"""
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            product_dir = root / "Product_KB" / "insoles" / "NEG001"
+            product_dir.mkdir(parents=True)
+            path = product_dir / "product.md"
+            path.write_text(product_md, encoding="utf-8")
+            (product_dir / "main.jpg").write_bytes(b"")
+
+            record = load_product_file(path, root)[0]
+
+            self.assertNotIn("足弓支撑", record["keywords"])
+            self.assertIn("足弓支撑无支撑", record["keywords"])
+            self.assertEqual(record["factory_offer"]["price_term"], "EXW")
+            self.assertNotIn("EXW", record["semantic_text"])
 
 
 if __name__ == "__main__":

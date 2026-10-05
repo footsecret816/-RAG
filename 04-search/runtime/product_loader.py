@@ -15,9 +15,10 @@ from profiles.profile_loader import load_default_product_profile
 
 
 _PRODUCT_PROFILE = load_default_product_profile()
+_PERFORMANCE_RULES = _PRODUCT_PROFILE.get("performance_attributes") or {}
 _PERFORMANCE_LABELS = {
     key: str(rule.get("label") or key)
-    for key, rule in (_PRODUCT_PROFILE.get("performance_attributes") or {}).items()
+    for key, rule in _PERFORMANCE_RULES.items()
 }
 
 
@@ -109,8 +110,21 @@ def _keywords(product: dict[str, Any], offer: dict[str, Any]) -> list[str]:
     if isinstance(perf, dict):
         for key, label in _PERFORMANCE_LABELS.items():
             value = perf.get(key)
-            if value is not None and _clean(value):
-                values.extend([label, f"{label}{_clean(value)}"])
+            cleaned = _clean(value)
+            if value is None or not cleaned:
+                continue
+
+            rule = _PERFORMANCE_RULES.get(key) or {}
+            keyword_rule = rule.get("keyword") or {}
+            suppressed = {
+                _clean(item).casefold()
+                for item in (keyword_rule.get("suppress_label_values") or [])
+                if _clean(item)
+            }
+
+            if cleaned.casefold() not in suppressed:
+                values.append(label)
+            values.append(f"{label}{cleaned}")
 
     category = _clean(product.get("Product_Category"))
     if category:
@@ -175,6 +189,7 @@ def load_product_file(path: Path, product_data_root: Path) -> list[dict[str, Any
                     "material": offer.get("Material"),
                     "material_detail": offer.get("Material_Detail"),
                     "price": offer.get("Price"),
+                    "price_term": offer.get("Price_Term"),
                     "moq": offer.get("MOQ"),
                     "size_system": offer.get("Size_System"),
                     "size_range": offer.get("Size_Range"),

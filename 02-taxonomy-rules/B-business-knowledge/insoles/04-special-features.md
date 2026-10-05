@@ -1,19 +1,13 @@
-# Special Features / 特殊属性
+# Compatibility Pointer
 
-该字段为可选字段。
+特殊属性标准词不再在此维护。
 
-普通鞋垫没有特殊属性时可留空。
+请读取：
 
-## 当前标准属性
+```text
+profiles/active-profile.yaml
+→ 当前 Product Profile
+→ tags.special
+```
 
-- 防穿刺
-- 防静电
-- ESD
-- 绝缘
-
-## 规则
-
-- 普通功能不放入 Special_Features。
-- 缓震、足弓支撑、透气等属于 Function_Tags。
-- 防穿刺、ESD 等特殊技术或劳保属性放在本字段。
-- 后续出现新的明确技术属性时再补充。
+本文件仅用于兼容旧引用。

@@ -170,3 +170,19 @@ V1 最终验收标准：
 3. 新增、修改、新工厂、删除等维护流程真实测试通过；
 4. 20～30 条固定业务回归题达到既定预期；
 5. 本地受控文件通过 sync/verify_sync.py 一致性校验。
+
+## Profile 模块化测试
+
+运行：
+
+```bash
+python 07-tests/runtime/test_profile_modularization.py
+```
+
+用于确认：
+
+- active Profile 可正常加载；
+- 当前默认 Profile 保留原业务字段；
+- Core runtime 不重新硬编码公司 / 产品专属值；
+- 明确的负向性能值不会生成正向关键词；
+- Price_Term 能随 Factory Offer 返回且不进入语义文本。
