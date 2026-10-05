@@ -60,7 +60,7 @@ def apply_patch(candidate: dict[str, Any], patch: dict[str, Any]) -> dict[str, A
                 if field == "Factory_Name":
                     continue
                 if field not in {
-                    "Material", "Material_Detail", "Price", "MOQ",
+                    "Material", "Material_Detail", "Price", "Price_Term", "MOQ",
                     "Size_System", "Size_Range",
                 }:
                     raise ValueError(f"{sku}/{factory}: 不允许修改字段 {field}")
