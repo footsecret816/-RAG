@@ -40,7 +40,7 @@ def load_default_product_profile() -> dict[str, Any]:
     product_id = str(active.get("default_product_profile") or "").strip()
     if not company_id or not product_id:
         raise ValueError("active-profile.yaml 缺少 company_profile/default_product_profile")
-    return _read_yaml(PROFILE_ROOT / company_id / "products" / f"{product_id}.yaml")
+    return _read_yaml(PROFILE_ROOT / company_id / "products" / product_id / "profile.yaml")
 
 
 def default_product_category() -> str:
