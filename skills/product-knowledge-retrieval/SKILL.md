@@ -62,7 +62,7 @@ profiles/active-profile.yaml
 
 公司名、产品材质、功能、场景、性能字段、自然语言映射、展示字段不得写死在 Base Skill；这些信息只来自 Profile。
 
-当前默认 Profile 仍是润通 + 鞋垫，因此润通现有业务效果保持不变。
+当前运行行为由 active Profile 决定；更换公司或产品时只替换 Profile 与 Product_KB，不修改 Core。
 
 ---
 
