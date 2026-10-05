@@ -152,6 +152,7 @@ V1 已增加可执行测试层：
 ```text
 07-tests/runtime/test_core.py
 07-tests/runtime/test_data_management.py
+07-tests/runtime/test_profile_modularization.py
 07-tests/runtime/regression_runner.py
 ```
 
@@ -169,4 +170,5 @@ V1 最终验收标准：
 2. 真实 Product_KB 建库 / 校验通过；
 3. 新增、修改、新工厂、删除等维护流程真实测试通过；
 4. 20～30 条固定业务回归题达到既定预期；
-5. 本地受控文件通过 sync/verify_sync.py 一致性校验。
+5. Profile 模块化测试通过，Core runtime 不再硬编码当前公司 / 产品业务值；
+6. 本地受控文件通过 sync/verify_sync.py 一致性校验。
