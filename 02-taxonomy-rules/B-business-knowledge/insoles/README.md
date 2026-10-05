@@ -1,18 +1,9 @@
-# Insoles / 鞋垫类业务知识 V1
+# Compatibility Pointer
 
-本目录服务于：
+鞋垫业务知识已模块化迁移到：
 
-`Product_Category = 鞋垫`
+```text
+profiles/runtong/products/insoles/
+```
 
-目标：把业务员自然语言稳定转换成鞋垫知识库中的标准材质、功能、场景、特殊属性、性能条件和检索条件。
-
-当前结构：
-
-1. Material_Mapping / 材质
-2. Function_Tags / 功能标签
-3. Scenario_Tags / 使用场景
-4. Special_Features / 特殊属性
-5. Performance_Attributes / 性能指标
-6. Business_Concept_Mapping / 业务概念映射
-
-真实 SKU、真实工厂、真实价格、MOQ、产品图片不进入本目录。
+本目录仅保留旧路径兼容入口。正式维护请修改 Product Profile，不要在 Core 中复制第二份鞋垫规则。
