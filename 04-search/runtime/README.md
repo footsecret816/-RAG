@@ -14,23 +14,27 @@ GitHub 只保存代码和模型规定，不保存模型权重、真实产品数�
 
 ## 运行目录
 
-默认自动寻找：
+运行路径由当前 Company Profile 提供兼容提示。
+
+推荐显式设置通用变量：
 
 ```text
-<工作目录>/RUNTONG products/Product_Data/
+PRODUCT_DATA_ROOT=<Product_Data绝对路径>
 ```
 
-推荐显式设置：
+当前润通 Profile 继续兼容：
 
 ```text
-RUNTONG_PRODUCT_DATA=D:\ACCIO\RUNTONG products\Product_Data
+RUNTONG_PRODUCT_DATA
 ```
 
-如模型已提前下载，可设置：
+如模型已提前下载，推荐设置：
 
 ```text
-RUNTONG_EMBEDDING_MODEL_PATH=D:\ACCIO\RUNTONG products\Product_Data\_models\multilingual-e5-small
+EMBEDDING_MODEL_PATH=<multilingual-e5-small目录>
 ```
+
+当前润通 Profile 同时兼容原有 `RUNTONG_EMBEDDING_MODEL_PATH`。
 
 未设置本地模型路径时，会使用模型 ID 下载到：
 
@@ -82,7 +86,7 @@ python 04-search/runtime/validate_index.py
 ## 查询
 
 ```bash
-python 04-search/runtime/search.py --request-json "{\"product_category\":\"鞋垫\",\"hard_conditions\":[{\"field\":\"MOQ\",\"op\":\"lte\",\"value\":3000}],\"soft_conditions\":[{\"field\":\"Softness\",\"op\":\"range\",\"value\":[1,3]}],\"priority\":[{\"field\":\"MOQ\",\"level\":\"high\"}],\"semantic_query\":\"每天站8小时，想脚底没那么累\"}"
+python 04-search/runtime/search.py --request-json "<按 active Product Profile 生成的 Search_Request JSON>"
 ```
 
 也可以把 JSON 从 stdin 输入。
