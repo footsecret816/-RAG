@@ -16,12 +16,4 @@ profiles/active-profile.yaml
 → 当前 Product Profile
 ```
 
-当前润通鞋垫标准词、性能字段、自然语言映射等以：
-
-```text
-profiles/runtong/products/insoles/profile.yaml
-```
-
-为可执行真源。
-
 旧的 B-business-knowledge 内容仅作为历史说明，不得覆盖 active Product Profile。
