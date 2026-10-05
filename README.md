@@ -1,165 +1,103 @@
-# 产品知识库与智能检索系统
+# Product Knowledge Retrieval / 产品知识检索 Skill
 
-这是一套**平台无关**的企业产品知识库与智能检索系统。
+这是一个平台无关的企业内部产品知识检索与维护 Skill。
 
-目标是让业务员使用自然语言查询公司真实产品库，并稳定返回具体的产品与供应方案。
-
-## 核心目标
+目标：
 
 ```text
-业务需求
+业务员自然语言
 ↓
-找到合适 Product SKU
+Search_Request
 ↓
-找到具体 Factory Offer
+结构化条件 + Keyword + Vector
 ↓
-未来可继续关联 Packaging SKU
-```
-
-当前产品检索粒度：
-
-```text
 Product SKU + Factory Offer
+↓
+紧凑推荐结果
 ```
 
-未来完整业务方案：
+## 架构
 
 ```text
-Product SKU + Factory Offer + Packaging SKU
+Base Skill / Core
++
+profiles/
++
+外部 Product_KB
++
+Search_Index
 ```
 
-## 系统结构
+### Core
 
-1. `01-schema/`  
-   定义产品数据结构和标准 product.md 模板。
+负责：
 
-2. `02-taxonomy-rules/`  
-   定义标准词、自然语言映射、硬软条件和业务规则。
+- 数据导入与维护
+- Search_Request / Search_Result
+- 结构化条件
+- Keyword
+- Vector
+- Hybrid Ranking
+- FAISS
+- 索引更新
+- Agent 展示框架
+- Tests
 
-3. `03-data-management/`  
-   负责产品资料导入、更新、校验、正式写库与 Change Set。
-
-4. `04-search/`  
-   负责 Search Object、索引同步、混合检索与排序。
-
-5. `05-retrieval-tool/`  
-   把自然语言转换成标准 Search Request，并调用 04。
-
-6. `06-agent/`  
-   业务使用入口。默认查询；明确维护请求才转 03。
-
-7. `07-tests/`  
-   验证数据链路、搜索、Retrieval Tool、Agent 与回归稳定性。
-
-8. `skills/`  
-   可安装、可迁移的标准 Skill 包；当前包含产品知识检索 Skill。
-
-9. `adapters/`  
-   Accio Work、WorkBuddy、Codex、DeepSeek Harness、Claude 等平台适配层。
-
-10. `docs/`  
-   总体架构、数据流、部署和管理员操作说明。
-
-## 核心数据流
+### Profiles
 
 ```text
-原始产品表格 + 图片
-↓
-03 Data Management
-↓
-Product_KB
-↓
-04 Search Engine
-↓
-05 Retrieval Tool
-↓
-06 Agent
-↓
-业务员
+profiles/active-profile.yaml
+→ Company Profile
+→ Product Profile
 ```
 
-## 数据边界
+公司名、产品材质、标签、性能字段、查询映射、展示字段等企业 / 产品专属信息放在 Profile，不写死在 Core。
 
-真实业务数据不进入本 GitHub 仓库。
+当前仓库默认启用润通鞋垫 Profile。
 
-建议实际存储：
+未来换公司或产品时，目标是：
+
+```text
+Core 不改
+↓
+替换 Company / Product Profile
+↓
+导入新的 Product_KB
+↓
+build_index
+```
+
+## 真实数据
+
+真实 SKU、图片、工厂、价格、MOQ、客户资料和 Search_Index 不进入 GitHub。
+
+建议运行目录：
 
 ```text
 Product_Data/
 ├─ Raw_Input/
 ├─ Product_KB/
-│  ├─ insoles/
-│  ├─ shoe-care/
-│  └─ ...
-└─ Packaging_KB/   # 未来预留
+├─ Packaging_KB/
+├─ Search_Index/
+└─ _models/
 ```
 
-本仓库只管理：
+## 主要模块
 
-- Schema
-- Taxonomy & Rules
-- 数据管理逻辑
-- 搜索逻辑
-- Retrieval Tool 规则
-- Agent 规则
-- 测试规范
-- 系统文档
+- `01-schema/`：通用数据结构
+- `02-taxonomy-rules/`：通用规则框架
+- `03-data-management/`：导入、校验、维护
+- `04-search/`：Hybrid Search
+- `05-retrieval-tool/`：查询接口
+- `06-agent/`：回答规则
+- `07-tests/`：测试 / 回归
+- `profiles/`：当前公司和产品专属配置
+- `skills/`：Skill 包
+- `adapters/`：平台适配
+- `sync/`：离线一致性校验
 
-## Packaging_KB
-
-包装作为独立知识对象管理。
-
-每个包装未来拥有独立：
+当前检索粒度固定为：
 
 ```text
-Packaging_SKU
+Product SKU + Factory Offer
 ```
-
-产品通过：
-
-```text
-Packaging_Options
-```
-
-引用可关联的 Packaging_SKU。
-
-当前 V1 只保留接口，不展开 Packaging_KB 内部 Schema。
-
-## 当前状态
-
-**V1 架构与规则设计已完成。**
-
-已完成 01～07 的 V1 规则设计和系统级文档。
-
-下一阶段重点：
-
-```text
-建立真实 Product_KB
-→ 实现可执行 Search / Retrieval Tool
-→ 用真实脱敏案例跑 07 Tests
-→ 根据测试结果迭代
-```
-
-本项目保持平台无关，避免把核心产品知识和检索逻辑绑定到单一 Agent 平台。
-
-跨平台统一内部接口：
-
-```text
-Search_Request
-Search_Result
-Change_Set
-```
-
-不同平台的安装、Skill、MCP、API 或配置差异统一放入 `adapters/`。
-
-
-## 可安装 Skill
-
-当前标准 Skill：
-
-```text
-skills/product-knowledge-retrieval/
-└─ SKILL.md
-```
-
-该 Skill 可作为“润通业务 AI 助理”的产品知识检索能力，也可以独立挂载到其他 Agent。
