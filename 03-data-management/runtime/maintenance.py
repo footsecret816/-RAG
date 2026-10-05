@@ -240,6 +240,10 @@ def build_plan(candidate_data: dict[str, Any]) -> dict[str, Any]:
             merged["Main_Image"] = target_name
         elif old is not None:
             merged["Main_Image"] = old.get("Main_Image") or "main.jpg"
+        else:
+            raise ValueError(
+                f"{candidate['SKU_ID']}: V1 新 SKU 必须提供可确认的 Main_Image_Source"
+            )
 
         all_changes.extend(changes)
         products.append({
