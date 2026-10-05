@@ -1,0 +1,18 @@
+id: runtong
+name: Runtong & Wayeah
+business_type: B2B export
+default_currency: RMB
+
+runtime:
+  product_data_env:
+    generic: PRODUCT_DATA_ROOT
+    legacy: RUNTONG_PRODUCT_DATA
+  embedding_model_path_env:
+    generic: EMBEDDING_MODEL_PATH
+    legacy: RUNTONG_EMBEDDING_MODEL_PATH
+  embedding_revision_env:
+    generic: EMBEDDING_MODEL_REVISION
+    legacy: RUNTONG_EMBEDDING_MODEL_REVISION
+  product_data_path_hints:
+    - RUNTONG products/Product_Data
+    - Product_Data
