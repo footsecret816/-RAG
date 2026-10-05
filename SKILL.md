@@ -4,7 +4,7 @@ description: Internal product knowledge retrieval and maintenance skill for comp
 compatibility: Requires access to an external Product_KB folder and a Python runtime for executable hybrid retrieval.
 metadata:
   author: runtong-wayyeah
-  version: "1.2.0"
+  version: "1.3.0-rc1"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -22,13 +22,31 @@ metadata:
 
 GitHub 只保存：
 
+- 通用 Core；
+- 可替换 Company / Product Profiles；
 - 数据结构；
-- 标签和业务规则；
+- 通用标签和查询规则；
 - 03 数据导入 / 维护可执行代码；
 - 04 混合检索可执行代码；
 - 05 查询接口与校验代码；
 - Agent 展示规则；
 - 测试与离线同步校验规范。
+
+---
+
+## Profile 边界
+
+当前 active profile：
+
+```text
+profiles/active-profile.yaml
+→ company_profile: runtong
+→ default_product_profile: insoles
+```
+
+公司 / 产品专属信息必须来自 `profiles/`；Core 不得把润通、鞋垫材质、标签、性能字段等写死在运行代码中。
+
+更换公司或产品时，目标是替换 Profile + Product_KB，不修改 Core。
 
 ---
 
@@ -80,11 +98,13 @@ Product_Data/
 └─ Search_Index/
 ```
 
-推荐设置环境变量：
+推荐设置通用环境变量：
 
 ```text
-RUNTONG_PRODUCT_DATA=<Product_Data绝对路径>
+PRODUCT_DATA_ROOT=<Product_Data绝对路径>
 ```
+
+当前润通 Profile 继续兼容原有 `RUNTONG_PRODUCT_DATA`，因此现有 Accio 环境无需立即改动。
 
 ### 第一步：检查运行环境
 
@@ -154,7 +174,7 @@ Agent 不得绕过检索结果重新凭感觉挑产品。
 
 查询标准化特别规则：
 
-- “每天站8小时，想脚底没那么累”不能只留给向量；应尽量映射为“长时间站立 + 缓震 / 抗疲劳减压”等软条件，同时保留原始模糊语义给向量；
+- 能可靠映射到 active Product Profile 的场景 / 功能 / 性能，先结构化，同时可保留原始模糊语义给向量；
 - “MOQ越低越好”使用 `{"field":"MOQ","level":"high","goal":"min"}`；
 - “价格贵一点没关系”可使用 `{"field":"Price","level":"low","goal":"min"}`；
 - priority.goal 即使没有 soft_conditions，也会进入本次匹配分和排序。
@@ -237,8 +257,9 @@ KB 路径、价格口径等全局配置只在首次设置或发生变化时确�
 
 ## 必须遵守的核心模块
 
-- `01-schema/`：产品数据结构真源
-- `02-taxonomy-rules/`：标准词、自然语言映射和业务规则真源
+- `01-schema/`：跨产品公共数据结构
+- `02-taxonomy-rules/`：通用查询 / 标签规则框架
+- `profiles/`：当前公司与产品专属规则真源
 - `03-data-management/`：产品导入、维护、校验和 Change Set
 - `04-search/`：检索规则和可执行检索引擎
 - `05-retrieval-tool/`：统一 Search_Request / Search_Result
