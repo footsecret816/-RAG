@@ -1,6 +1,6 @@
 # 04 Interface Schema / 统一机器接口规范
 
-本文件定义不同 Agent 平台调用 05 Retrieval Tool 时共用的内部数据结构。
+本文件定义不同智能体平台调用 05 Retrieval Tool 时共用的内部数据结构。
 
 目标：
 
@@ -10,7 +10,7 @@
 
 ## 一、Search_Request
 
-推荐结构：
+V1 结构：
 
 ```json
 {
@@ -24,7 +24,7 @@
 
 ### hard_conditions
 
-必须满足的条件，例如：
+必须满足的条件：
 
 ```json
 [
@@ -33,31 +33,83 @@
 ]
 ```
 
+支持的基础操作符：
+
+```text
+eq
+neq
+contains
+lte
+gte
+lt
+gt
+range
+in
+```
+
+---
+
 ### soft_conditions
 
-用于排序的偏好，例如：
+用于本次需求匹配分的具体偏好：
 
 ```json
 [
-  {"field":"Scenario_Tags","op":"contains","value":"户外徒步"},
+  {"field":"Scenario_Tags","op":"contains","value":"长时间站立"},
   {"field":"Softness","op":"range","value":[1,3]}
 ]
 ```
 
+---
+
 ### priority
 
-记录用户明确优先级，例如：
+记录用户明确优先级以及可选的相对优化方向：
 
 ```json
 [
-  {"field":"MOQ","level":"high"},
-  {"field":"Price","level":"low"}
+  {"field":"MOQ","level":"high","goal":"min"},
+  {"field":"Price","level":"low","goal":"min"},
+  {"field":"Elasticity","level":"medium","goal":"max"}
 ]
 ```
 
+`level`：
+
+```text
+high
+medium
+low
+```
+
+`goal` 当前 V1：
+
+```text
+min = 越低越好
+max = 越高越好
+```
+
+如果只有优先级、没有明确优化方向，可以省略 goal。
+
+重要：
+
+> priority.goal 即使没有对应 soft_condition，也必须参与排序。
+
+---
+
 ### semantic_query
 
-保留无法完全结构化的原始语义。
+保留模糊自然语言，用于语义向量召回和辅助排序。
+
+例如：
+
+```text
+每天站8小时，想脚底没那么累
+```
+
+如果其中部分含义已经可靠映射成 soft_conditions，仍可保留原始模糊表达给向量。
+
+但价格、MOQ 等精确条件不能只写在 semantic_query 里。
 
 ---
 
@@ -88,12 +140,21 @@
         "performance_attributes": {}
       },
       "packaging_options": [],
+      "match_score": 86.0,
+      "star_count": 4,
       "match_reasons": [],
       "unmet_conditions": []
     }
   ]
 }
 ```
+
+说明：
+
+- `match_score`：本次结构化需求匹配分；
+- `star_count`：由 match_score 稳定映射；
+- 向量相似度不直接作为 star_count；
+- 相对偏好（goal=min/max）会进入 match_score。
 
 ---
 
@@ -121,4 +182,5 @@
 2. 04 / 05 不读取平台专属字段。
 3. 平台变化不能要求修改 Product_KB Schema。
 4. 新平台优先新增 Adapter，不改核心模块。
-5. V1 可先用 JSON / 等价结构表达；后续实现代码时保持字段语义不变。
+5. 同一字段的 goal 含义跨平台保持一致。
+6. V1 使用 JSON / 等价结构表达，字段语义不得自行扩写。
