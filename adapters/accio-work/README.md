@@ -72,7 +72,7 @@ Skill + Python + 本地 Embedding 模型 + 本地 FAISS
 ```text
 D:\ACCIO\
 ├─ <Skill仓库>
-└─ RUNTONG products\
+└─ <Company workspace>\
    └─ Product_Data\
       ├─ Product_KB\
       ├─ Packaging_KB\
@@ -81,11 +81,13 @@ D:\ACCIO\
       └─ _models\
 ```
 
-推荐设置：
+推荐设置通用变量：
 
 ```text
-RUNTONG_PRODUCT_DATA=D:\ACCIO\RUNTONG products\Product_Data
+PRODUCT_DATA_ROOT=<Product_Data绝对路径>
 ```
+
+当前润通 Profile 继续兼容现有 `RUNTONG_PRODUCT_DATA`，所以现有 Accio 部署不需要为了本次模块化立即改环境变量。
 
 ---
 
@@ -254,7 +256,9 @@ Accio Work 只是当前一个运行平台。
 ```text
 Product_KB
 +
-GitHub规则
+Base Skill
++
+active Company / Product Profile
 +
 multilingual-e5-small
 +
