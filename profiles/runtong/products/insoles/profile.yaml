@@ -175,3 +175,84 @@ display_fields:
   - Heel_Cup_Depth
   - Size_Range
   - Special_Features
+
+
+automation_levels:
+  Product_Category: RULE
+  SKU_ID: AUTO
+  Main_Image: AUTO
+  Factory_Name: AUTO
+  MOQ: AUTO
+  Price: AUTO
+  Price_Term: AUTO
+  Material: RULE
+  Material_Detail: AUTO
+  Size_Range: AUTO
+  Size_System: RULE
+  Function_Tags: RULE_REVIEW
+  Scenario_Tags: RULE_REVIEW
+  Special_Features: RULE
+  Cushioning: REVIEW
+  Elasticity: REVIEW
+  Softness: REVIEW
+  Arch_Support: RULE_REVIEW
+  Arch_Height: MISSING_REVIEW
+  Heel_Cup_Depth: MISSING_REVIEW
+
+query_mappings:
+  - phrases:
+      - 不要太软
+    map:
+      Softness:
+        preference: range
+        value: [1, 3]
+  - phrases:
+      - 支撑强一点
+      - 托住脚
+    map:
+      Function_Tags:
+        contains: 足弓支撑
+      Arch_Support:
+        preference: 强支撑
+  - phrases:
+      - 有弹性
+      - 回弹好
+      - 脚感不要塌
+    map:
+      Elasticity:
+        preference: high
+      Function_Tags:
+        contains: 回弹
+  - phrases:
+      - 户外走路
+    map:
+      Scenario_Tags:
+        candidates:
+          - 户外徒步
+          - 长距离行走
+  - phrases:
+      - 站一天
+      - 每天站8小时
+      - 长时间工作
+    map:
+      Scenario_Tags:
+        candidates:
+          - 长时间站立 / 工作
+      Function_Tags:
+        candidates:
+          - 抗疲劳减压
+          - 缓震
+  - phrases:
+      - plantar fasciitis
+      - 足底筋膜炎
+    map:
+      Function_Tags:
+        candidates:
+          - 足弓支撑
+          - 抗疲劳减压
+      Arch_Support:
+        preference: light_or_strong
+      Heel_Cup_Depth:
+        preference: medium_or_deep
+      Cushioning:
+        preference: not_low
