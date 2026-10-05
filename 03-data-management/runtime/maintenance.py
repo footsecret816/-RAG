@@ -34,6 +34,7 @@ FACTORY_FIELDS = (
     "Material",
     "Material_Detail",
     "Price",
+    "Price_Term",
     "MOQ",
     "Size_System",
     "Size_Range",
