@@ -26,12 +26,6 @@ profiles/active-profile.yaml
 
 产品专属标准词、性能字段、展示字段和自然语言映射，以当前 Product Profile 为准。
 
-当前润通鞋垫使用：
-
-```text
-profiles/runtong/products/insoles/profile.yaml
-```
-
 ## 三、排序原则
 
 固定保持：
