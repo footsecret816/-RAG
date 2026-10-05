@@ -161,13 +161,29 @@ Agent：
 
 ---
 
-## 产品资料更新
+## 产品资料导入与更新
 
-03-data-management 完成正式 Product_KB 写入后，执行：
+V1 不再依赖 Agent 直接手工改 product.md。
+
+固定格式 Excel / CSV 先执行：
 
 ```bash
-python 04-search/runtime/update_index.py
+python 03-data-management/runtime/ingest_table.py "<产品表.xlsx>"
 ```
+
+REVIEW 确认并校验后先看差异：
+
+```bash
+python 03-data-management/runtime/maintenance.py candidate.json
+```
+
+用户明确确认后再提交并同步索引：
+
+```bash
+python 03-data-management/runtime/maintenance.py candidate.json --commit --confirm --update-index
+```
+
+删除 SKU / Factory Offer 必须使用 `delete_product.py` 显式执行。
 
 该脚本会：
 
@@ -256,3 +272,35 @@ Python混合检索代码
 - 把 JSON 结果交回上层 Agent；
 
 即可复用同一套核心系统。
+
+
+---
+
+## Accio 本地目录与 GitHub 一致性
+
+Accio 当前本地 Skill 目录可能没有 `.git`，因此不要以“文件已复制”作为同步成功标准。
+
+每次覆盖 GitHub 发布文件后必须运行：
+
+```bash
+python sync/verify_sync.py
+```
+
+要求：
+
+```text
+ok = true
+matched = total
+problems = []
+```
+
+只有校验通过后，才运行：
+
+```bash
+python 07-tests/runtime/test_core.py
+python 07-tests/runtime/test_data_management.py
+```
+
+以及真实业务回归集。
+
+`Product_KB`、`Search_Index`、Embedding 模型、真实图片不属于 GitHub 镜像校验对象。
