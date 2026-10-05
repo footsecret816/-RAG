@@ -4,7 +4,7 @@ description: Search, compare, and recommend internal company products from an ex
 compatibility: Requires access to Product_KB. For executable V1 retrieval, the full repository runtime under 04-search/runtime must be available to the agent environment.
 metadata:
   author: runtong-wayyeah
-  version: "1.1.1"
+  version: "1.2.0"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -110,6 +110,26 @@ Product SKU + Factory Offer
 
 ---
 
+## 产品导入 / 维护
+
+完整仓库运行时，数据维护统一走：
+
+```text
+03-data-management/runtime/
+```
+
+固定表格先生成 staging candidate；REVIEW 未确认时禁止写入正式 Product_KB。
+
+正式提交必须：
+
+```bash
+python 03-data-management/runtime/maintenance.py candidate.json --commit --confirm --update-index
+```
+
+删除使用 `delete_product.py`，不得用空白值隐式删除。
+
+---
+
 ## 索引初始化与更新
 
 完整仓库运行时：
@@ -129,6 +149,14 @@ python 04-search/runtime/update_index.py
 ```
 
 普通查询不得修改 Product_KB。
+
+如果本地 Skill 不是 Git 仓库，在测试前执行：
+
+```bash
+python sync/verify_sync.py
+```
+
+只有受控文件全部一致，才把本地测试视为当前 GitHub 版本测试。
 
 ---
 
