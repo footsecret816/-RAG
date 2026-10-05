@@ -222,9 +222,7 @@ python sync/verify_sync.py
 
 ## REVIEW 确认交互
 
-产品入库时，所有需要人工确认的 REVIEW 字段应集中一次展示，并使用短编号。
-
-REVIEW 字段应由当前 Product Profile 决定，并集中一次展示。
+产品入库时，所有需要人工确认的 REVIEW 字段应由当前 Product Profile 决定，并集中一次展示。
 
 推荐交互：
 
@@ -252,7 +250,7 @@ KB 路径、价格口径等全局配置只在首次设置或发生变化时确�
 - `06-agent/`：Agent 行为与回答格式
 - `07-tests/`：测试与回归
 
-如上层说明与具体模块冲突，以对应 01～07 模块为准。
+如说明发生冲突，以通用 Core 的可执行规则 + 当前 active Profile 为准。
 
 ---
 
