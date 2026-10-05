@@ -35,7 +35,7 @@ def _env_path(name: str | None) -> Path | None:
 def _runtime_env_path(logical_name: str) -> Path | None:
     runtime = load_company_profile().get("runtime") or {}
     env_spec = runtime.get(logical_name) or {}
-    for key in ("generic", "legacy"):
+    for key in ("legacy", "generic"):
         path = _env_path(str(env_spec.get(key) or "").strip() or None)
         if path is not None:
             return path
