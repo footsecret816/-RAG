@@ -32,6 +32,22 @@ GitHub 只保存：
 
 ---
 
+## Profile 边界
+
+查询或维护前先读取：
+
+```text
+profiles/active-profile.yaml
+→ 当前 Company Profile
+→ 当前 Product Profile
+```
+
+公司名、产品材质、功能、场景、性能字段、自然语言映射、展示字段不得写死在 Base Skill；这些信息只来自 Profile。
+
+当前运行行为由 active Profile 决定；更换公司或产品时只替换 Profile 与 Product_KB，不修改 Core。
+
+---
+
 ## 当前 V1 可执行检索架构
 
 ```text
@@ -83,7 +99,7 @@ Product_Data/
 推荐设置环境变量：
 
 ```text
-RUNTONG_PRODUCT_DATA=<Product_Data绝对路径>
+PRODUCT_DATA_ROOT=<Product_Data绝对路径>
 ```
 
 ### 第一步：检查运行环境
@@ -154,7 +170,7 @@ Agent 不得绕过检索结果重新凭感觉挑产品。
 
 查询标准化特别规则：
 
-- “每天站8小时，想脚底没那么累”不能只留给向量；应尽量映射为“长时间站立 + 缓震 / 抗疲劳减压”等软条件，同时保留原始模糊语义给向量；
+- 能可靠映射到当前 Product Profile 的场景 / 功能 / 性能先结构化，同时保留必要的原始模糊语义给向量；
 - “MOQ越低越好”使用 `{"field":"MOQ","level":"high","goal":"min"}`；
 - “价格贵一点没关系”可使用 `{"field":"Price","level":"low","goal":"min"}`；
 - priority.goal 即使没有 soft_conditions，也会进入本次匹配分和排序。
@@ -208,28 +224,18 @@ python sync/verify_sync.py
 
 产品入库时，所有需要人工确认的 REVIEW 字段应集中一次展示，并使用短编号。
 
-推荐：
+REVIEW 字段应由当前 Product Profile 决定，并集中一次展示。
+
+推荐交互：
 
 ```text
-性能
-P1 缓震：3
-P2 回弹：4
-P3 软硬：4
-
-场景
-S1 日常
-S2 长距离行走
+P1 <字段1>：<候选值>
+P2 <字段2>：<候选值>
+S1 <场景候选1>
+S2 <场景候选2>
 ```
 
-支持：
-
-```text
-确认
-P2=3
-去掉S2
-P=344
-S=12
-```
+支持“确认 / 编号=值 / 删除编号 / 选择编号”等最短交互。
 
 KB 路径、价格口径等全局配置只在首次设置或发生变化时确认。
 
@@ -237,8 +243,9 @@ KB 路径、价格口径等全局配置只在首次设置或发生变化时确�
 
 ## 必须遵守的核心模块
 
-- `01-schema/`：产品数据结构真源
-- `02-taxonomy-rules/`：标准词、自然语言映射和业务规则真源
+- `01-schema/`：通用产品数据结构
+- `02-taxonomy-rules/`：通用查询与标签规则
+- `profiles/`：当前公司 / 产品专属信息真源
 - `03-data-management/`：产品导入、维护、校验和 Change Set
 - `04-search/`：检索规则和可执行检索引擎
 - `05-retrieval-tool/`：统一 Search_Request / Search_Result

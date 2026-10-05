@@ -11,13 +11,13 @@ from config import PRODUCT_PREFIX
 
 
 _SPLIT_RE = re.compile(r"[\s,，;；/|、+]+")
+from profiles.profile_loader import load_default_product_profile
+
+
+_PRODUCT_PROFILE = load_default_product_profile()
 _PERFORMANCE_LABELS = {
-    "Cushioning": "缓震",
-    "Elasticity": "回弹",
-    "Softness": "软硬",
-    "Arch_Height": "足弓高度",
-    "Arch_Support": "足弓支撑",
-    "Heel_Cup_Depth": "后跟杯深度",
+    key: str(rule.get("label") or key)
+    for key, rule in (_PRODUCT_PROFILE.get("performance_attributes") or {}).items()
 }
 
 

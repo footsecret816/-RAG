@@ -1,0 +1,258 @@
+id: insoles
+
+product_category:
+  canonical: 鞋垫
+  aliases:
+    - 鞋垫
+    - insole
+    - insoles
+  directory: insoles
+
+materials:
+  allowed:
+    - 记忆棉
+    - PU
+    - EVA
+    - Gel
+    - PORON
+    - 乳胶
+    - Haipoli
+    - TPU
+    - TPE
+    - PE Foam
+  aliases:
+    memory foam: 记忆棉
+    memory sponge: 记忆棉
+    慢回弹海绵: 记忆棉
+    慢回弹泡棉: 记忆棉
+    记忆棉: 记忆棉
+    polyurethane: PU
+    聚氨酯: PU
+    pu foam: PU
+    pu: PU
+    eva: EVA
+    gel: Gel
+    poron: PORON
+    latex: 乳胶
+    乳胶: 乳胶
+    haipoli: Haipoli
+    海波丽: Haipoli
+    tpu: TPU
+    tpe: TPE
+    pe foam: PE Foam
+    pe: PE Foam
+
+size_systems:
+  allowed:
+    - EU
+    - US
+    - UK
+    - Alpha
+  aliases:
+    eu: EU
+    欧码: EU
+    us: US
+    美码: US
+    uk: UK
+    英码: UK
+    alpha: Alpha
+    字母: Alpha
+    字母尺码: Alpha
+
+tags:
+  function:
+    - 足弓支撑
+    - 缓震
+    - 回弹
+    - 抗疲劳减压
+    - 防滑
+    - 透气排湿
+    - 防臭
+  scenario:
+    - 日常
+    - 长距离行走
+    - 长时间站立
+    - 长时间站立 / 工作
+    - 长时间站立/工作
+    - 劳保 / 安全鞋
+    - 劳保/安全鞋
+    - 跑步
+    - 篮球
+    - 足球
+    - 健身 / 训练
+    - 健身/训练
+    - 综合运动
+    - 户外徒步
+    - 登山 / 越野
+    - 登山/越野
+    - 休闲 / 皮鞋
+    - 休闲/皮鞋
+    - 紧脚鞋
+  special:
+    - 防穿刺
+    - 防静电
+    - ESD
+    - 绝缘
+
+performance_attributes:
+  Cushioning:
+    label: 缓震
+    type: number
+    min: 1
+    max: 5
+    column_aliases:
+      - Cushioning
+      - 缓震性
+      - 缓震
+  Elasticity:
+    label: 回弹
+    type: number
+    min: 1
+    max: 5
+    column_aliases:
+      - Elasticity
+      - 回弹性
+      - 回弹
+  Softness:
+    label: 软硬
+    type: number
+    min: 1
+    max: 5
+    column_aliases:
+      - Softness
+      - 软硬度
+      - 软硬
+  Arch_Height:
+    label: 足弓高度
+    type: enum
+    allowed:
+      - 低
+      - 中
+      - 高
+      - low
+      - medium
+      - high
+    column_aliases:
+      - Arch_Height
+      - 足弓高度
+  Arch_Support:
+    label: 足弓支撑
+    type: enum
+    allowed:
+      - 无支撑
+      - 轻度支撑
+      - 强支撑
+      - "no"
+      - light
+      - strong
+    column_aliases:
+      - Arch_Support
+      - 支撑强度
+      - 足弓支撑强度
+  Heel_Cup_Depth:
+    label: 后跟杯深度
+    type: enum
+    allowed:
+      - 平
+      - 浅
+      - 中
+      - 深
+      - flat
+      - shallow
+      - medium
+      - deep
+    column_aliases:
+      - Heel_Cup_Depth
+      - 后跟杯深度
+
+display_fields:
+  - Material
+  - Cushioning
+  - Elasticity
+  - Softness
+  - Arch_Support
+  - Arch_Height
+  - Heel_Cup_Depth
+  - Size_Range
+  - Special_Features
+
+
+automation_levels:
+  Product_Category: RULE
+  SKU_ID: AUTO
+  Main_Image: AUTO
+  Factory_Name: AUTO
+  MOQ: AUTO
+  Price: AUTO
+  Price_Term: AUTO
+  Material: RULE
+  Material_Detail: AUTO
+  Size_Range: AUTO
+  Size_System: RULE
+  Function_Tags: RULE_REVIEW
+  Scenario_Tags: RULE_REVIEW
+  Special_Features: RULE
+  Cushioning: REVIEW
+  Elasticity: REVIEW
+  Softness: REVIEW
+  Arch_Support: RULE_REVIEW
+  Arch_Height: MISSING_REVIEW
+  Heel_Cup_Depth: MISSING_REVIEW
+
+query_mappings:
+  - phrases:
+      - 不要太软
+    map:
+      Softness:
+        preference: range
+        value: [1, 3]
+  - phrases:
+      - 支撑强一点
+      - 托住脚
+    map:
+      Function_Tags:
+        contains: 足弓支撑
+      Arch_Support:
+        preference: 强支撑
+  - phrases:
+      - 有弹性
+      - 回弹好
+      - 脚感不要塌
+    map:
+      Elasticity:
+        preference: high
+      Function_Tags:
+        contains: 回弹
+  - phrases:
+      - 户外走路
+    map:
+      Scenario_Tags:
+        candidates:
+          - 户外徒步
+          - 长距离行走
+  - phrases:
+      - 站一天
+      - 每天站8小时
+      - 长时间工作
+    map:
+      Scenario_Tags:
+        candidates:
+          - 长时间站立 / 工作
+      Function_Tags:
+        candidates:
+          - 抗疲劳减压
+          - 缓震
+  - phrases:
+      - plantar fasciitis
+      - 足底筋膜炎
+    map:
+      Function_Tags:
+        candidates:
+          - 足弓支撑
+          - 抗疲劳减压
+      Arch_Support:
+        preference: light_or_strong
+      Heel_Cup_Depth:
+        preference: medium_or_deep
+      Cushioning:
+        preference: not_low

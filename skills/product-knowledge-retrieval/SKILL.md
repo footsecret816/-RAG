@@ -50,6 +50,22 @@ Skill 不保存真实 SKU、价格、MOQ 或工厂数据。
 
 ---
 
+## Profile 边界
+
+查询或维护前先读取：
+
+```text
+profiles/active-profile.yaml
+→ 当前 Company Profile
+→ 当前 Product Profile
+```
+
+公司名、产品材质、功能、场景、性能字段、自然语言映射、展示字段不得写死在 Base Skill；这些信息只来自 Profile。
+
+当前运行行为由 active Profile 决定；更换公司或产品时只替换 Profile 与 Product_KB，不修改 Core。
+
+---
+
 ## V1 检索方式
 
 完整仓库运行时存在时，默认使用：
@@ -79,7 +95,7 @@ intfloat/multilingual-e5-small
 
 ## 查询规则
 
-先按 02 的规则拆分：
+先按通用规则 + 当前 Product Profile 拆分：
 
 ```text
 Product_Category
@@ -203,7 +219,7 @@ Price
 - Packaging_KB 未启用时不得编造包装；
 - 默认回答保持简短。
 
-详细规则仍以仓库中的 01～07 模块为准。
+详细规则以通用 Core + 当前 active Profile 为准。
 
 ---
 
