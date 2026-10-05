@@ -1,0 +1,49 @@
+{
+  "suite_version": "v1.0",
+  "notes": "公开模板不保存真实SKU/工厂/价格。复制到 Product_Data/_tests/regression_cases.json 后填写真实预期。",
+  "cases": [
+    {
+      "id": "Q001",
+      "enabled": false,
+      "title": "长时间站立 + MOQ硬条件",
+      "search_request": {
+        "product_category": "鞋垫",
+        "hard_conditions": [
+          {"field": "MOQ", "op": "lte", "value": 3000}
+        ],
+        "soft_conditions": [
+          {"field": "Scenario_Tags", "op": "contains", "value": "长时间站立"},
+          {"field": "Function_Tags", "op": "contains", "value": "缓震"},
+          {"field": "Function_Tags", "op": "contains", "value": "抗疲劳减压"}
+        ],
+        "priority": [],
+        "semantic_query": "每天站很久，希望脚底不那么累"
+      },
+      "assert": {
+        "exact_match": true,
+        "top_sku": "<填写真实SKU>",
+        "min_top_star": 4,
+        "warnings_empty": true
+      }
+    },
+    {
+      "id": "Q002",
+      "enabled": false,
+      "title": "MOQ越低越好，价格其次",
+      "search_request": {
+        "product_category": "鞋垫",
+        "hard_conditions": [],
+        "soft_conditions": [],
+        "priority": [
+          {"field": "MOQ", "level": "high", "goal": "min"},
+          {"field": "Price", "level": "low", "goal": "min"}
+        ],
+        "semantic_query": "客户先测试产品"
+      },
+      "assert": {
+        "top_sku_any_of": ["<填写最低MOQ候选1>", "<填写最低MOQ候选2>"],
+        "warnings_empty": true
+      }
+    }
+  ]
+}
