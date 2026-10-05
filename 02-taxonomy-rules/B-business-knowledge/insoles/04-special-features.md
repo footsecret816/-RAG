@@ -1,19 +1,10 @@
-# Special Features / 特殊属性
+# Compatibility Pointer
 
-该字段为可选字段。
+润通鞋垫特殊属性已迁移到：
 
-普通鞋垫没有特殊属性时可留空。
+```text
+profiles/runtong/products/insoles/04-special-features.md
+profiles/runtong/products/insoles/profile.yaml
+```
 
-## 当前标准属性
-
-- 防穿刺
-- 防静电
-- ESD
-- 绝缘
-
-## 规则
-
-- 普通功能不放入 Special_Features。
-- 缓震、足弓支撑、透气等属于 Function_Tags。
-- 防穿刺、ESD 等特殊技术或劳保属性放在本字段。
-- 后续出现新的明确技术属性时再补充。
+`profile.yaml` 是可执行标准值真源。
