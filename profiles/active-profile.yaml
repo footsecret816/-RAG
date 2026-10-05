@@ -1,0 +1,5 @@
+profile_schema_version: "1.0"
+company_profile: runtong
+default_product_profile: insoles
+product_profiles:
+  - insoles
