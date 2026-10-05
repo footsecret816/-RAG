@@ -9,6 +9,11 @@ from pathlib import Path
 from typing import Any
 
 from common import (
+    DEFAULT_PRODUCT_CATEGORY,
+    ENUM_PERFORMANCE_KEYS,
+    NUMERIC_PERFORMANCE_KEYS,
+    PERFORMANCE_COLUMN_ALIASES,
+    PERFORMANCE_KEYS,
     normalize_material,
     normalize_size_system,
     parse_number,
@@ -34,13 +39,8 @@ COLUMN_ALIASES = {
     "Function_Tags": ["Function_Tags", "功能标签"],
     "Scenario_Tags": ["Scenario_Tags", "场景标签", "使用场景"],
     "Special_Features": ["Special_Features", "特殊特性", "特殊属性"],
-    "Cushioning": ["Cushioning", "缓震性", "缓震"],
-    "Elasticity": ["Elasticity", "回弹性", "回弹"],
-    "Softness": ["Softness", "软硬度", "软硬"],
-    "Arch_Height": ["Arch_Height", "足弓高度"],
-    "Arch_Support": ["Arch_Support", "支撑强度", "足弓支撑强度"],
-    "Heel_Cup_Depth": ["Heel_Cup_Depth", "后跟杯深度"],
 }
+COLUMN_ALIASES.update(PERFORMANCE_COLUMN_ALIASES)
 
 
 def _rows_from_csv(path: Path) -> list[dict[str, Any]]:
@@ -171,12 +171,7 @@ def build_candidate(
                 "Scenario_Tags": [],
                 "Special_Features": [],
                 "Performance_Attributes": {
-                    "Cushioning": None,
-                    "Elasticity": None,
-                    "Softness": None,
-                    "Arch_Height": None,
-                    "Arch_Support": None,
-                    "Heel_Cup_Depth": None,
+                    key: None for key in PERFORMANCE_KEYS
                 },
                 "Factory_Offers": [],
                 "Source_Descriptions": [],
@@ -193,7 +188,7 @@ def build_candidate(
                 if value not in item[key]:
                     item[key].append(value)
 
-        for key in ("Cushioning", "Elasticity", "Softness"):
+        for key in NUMERIC_PERFORMANCE_KEYS:
             value = parse_number(row.get(key))
             if value is not None:
                 current = item["Performance_Attributes"].get(key)
@@ -205,7 +200,7 @@ def build_candidate(
                         "message": f"同一 SKU 出现冲突值：{current} vs {value}",
                     })
 
-        for key in ("Arch_Height", "Arch_Support", "Heel_Cup_Depth"):
+        for key in ENUM_PERFORMANCE_KEYS:
             value = text(row.get(key))
             if value:
                 current = item["Performance_Attributes"].get(key)
@@ -283,7 +278,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="固定格式产品表格 → 03 候选数据")
     parser.add_argument("source")
     parser.add_argument("--sheet")
-    parser.add_argument("--category", default="鞋垫")
+    parser.add_argument("--category", default=DEFAULT_PRODUCT_CATEGORY)
     parser.add_argument("--image-dir")
     parser.add_argument("--output")
     args = parser.parse_args()
