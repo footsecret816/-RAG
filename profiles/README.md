@@ -18,7 +18,11 @@ profiles/
 └─ runtong/
    ├─ company.yaml
    └─ products/
-      └─ insoles.yaml
+      └─ insoles/
+         ├─ profile.yaml
+         ├─ schema.md
+         ├─ data-rules.md
+         └─ 业务词表 / 映射说明
 ```
 
 当前阶段只做“润通运行效果保持不变 + 专属信息模块化”，不提前实现复杂企业 Onboarding。
