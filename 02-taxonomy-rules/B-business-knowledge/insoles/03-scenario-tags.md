@@ -1,27 +1,10 @@
-# Scenario Tags / 使用场景标签
+# Compatibility Pointer
 
-场景标签回答：这款鞋垫适合在什么场景下使用？
+润通鞋垫场景标签已迁移到：
 
-## 当前标准标签
+```text
+profiles/runtong/products/insoles/03-scenario-tags.md
+profiles/runtong/products/insoles/profile.yaml
+```
 
-- 日常
-- 长距离行走
-- 长时间站立 / 工作
-- 劳保 / 安全鞋
-- 跑步
-- 篮球
-- 足球
-- 健身 / 训练
-- 综合运动
-- 户外徒步
-- 登山 / 越野
-- 休闲 / 皮鞋
-- 紧脚鞋
-
-## 规则
-
-- 不单独建立“适用鞋型”标签体系。
-- 鞋型如果本身明显代表使用场景，直接归入 Scenario_Tags。
-- 市场上经常被客户明确点名的运动可独立保留，例如跑步、篮球、足球。
-- 低频运动先归入“综合运动”，实际询盘频率足够高时再独立。
-- 标准标签尽量少而稳定，丰富说法放在近义词映射层处理。
+`profile.yaml` 是可执行标准值真源。
