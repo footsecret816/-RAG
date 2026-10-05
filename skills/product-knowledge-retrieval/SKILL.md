@@ -4,7 +4,7 @@ description: Search, compare, and recommend internal company products from an ex
 compatibility: Requires access to Product_KB. For executable V1 retrieval, the full repository runtime under 04-search/runtime must be available to the agent environment.
 metadata:
   author: runtong-wayyeah
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -85,9 +85,16 @@ intfloat/multilingual-e5-small
 Product_Category
 Hard Conditions
 Soft Conditions
-Priority
+Priority（可带 goal=min/max）
 Semantic Query
 ```
+
+标准化时：
+
+- 能可靠映射的场景 / 功能 / 性能先进入 soft_conditions；
+- “越低越好 / 越高越好”写成 priority.goal=min/max；
+- 模糊表达可以同时保留到 semantic_query 供向量辅助召回；
+- semantic_query 不直接决定星级。
 
 然后调用 04。
 
