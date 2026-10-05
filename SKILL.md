@@ -4,7 +4,7 @@ description: Internal product knowledge retrieval and maintenance skill for comp
 compatibility: Requires access to an external Product_KB folder and a Python runtime for executable hybrid retrieval.
 metadata:
   author: runtong-wayyeah
-  version: "1.1.1"
+  version: "1.2.0"
 ---
 
 # Product Knowledge Retrieval Skill
@@ -24,10 +24,11 @@ GitHub 只保存：
 
 - 数据结构；
 - 标签和业务规则；
-- 数据管理流程；
-- 可执行检索代码；
+- 03 数据导入 / 维护可执行代码；
+- 04 混合检索可执行代码；
+- 05 查询接口与校验代码；
 - Agent 展示规则；
-- 测试规范。
+- 测试与离线同步校验规范。
 
 ---
 
@@ -188,6 +189,18 @@ python 04-search/runtime/update_index.py
 - 重新做完整性验证。
 
 普通查询不得修改 Product_KB。
+
+---
+
+## 本地版本一致性
+
+Accio 等无 `.git` 的本地 Skill 镜像，必须在测试前执行：
+
+```bash
+python sync/verify_sync.py
+```
+
+只有发布清单中的受控文件全部匹配 GitHub Blob SHA，测试结果才视为当前 GitHub 版本的有效结果。
 
 ---
 
