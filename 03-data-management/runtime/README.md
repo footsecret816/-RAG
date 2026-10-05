@@ -40,10 +40,12 @@ python 03-data-management/runtime/ingest_table.py "<产品表.xlsx>"
 
 ```bash
 --sheet "Sheet1"
---category "鞋垫"
+--category "<Product_Category>"
 --image-dir "<图片目录>"
 --output "<candidate.json>"
 ```
+
+不传 `--category` 时，默认类别来自当前 active Product Profile。
 
 支持：
 
@@ -72,32 +74,11 @@ python 03-data-management/runtime/ingest_table.py "<产品表.xlsx>"
 status = pending
 ```
 
-Agent 按 02-taxonomy-rules 生成候选，向操作者集中确认。
+Agent 按 02 通用规则 + active Product Profile 生成候选，向操作者集中确认。
 
 确认后使用结构化 patch 写回 staging candidate。
 
-示例 patch：
-
-```json
-{
-  "products": {
-    "F0228": {
-      "fields": {
-        "Function_Tags": ["缓震", "回弹", "透气排湿"],
-        "Scenario_Tags": ["日常", "长距离行走"]
-      },
-      "Performance_Attributes": {
-        "Cushioning": 4,
-        "Elasticity": 4,
-        "Softness": 4
-      },
-      "Review_Status": {
-        "F0228-SEMANTIC": "confirmed"
-      }
-    }
-  }
-}
-```
+patch 中的 Function / Scenario / Performance 字段必须来自当前 Product Profile；Core 不提供固定产品词表。
 
 执行：
 
@@ -159,13 +140,13 @@ Product_Data/_Staging/backups/<timestamp>/
 删除 Factory Offer：
 
 ```bash
-python 03-data-management/runtime/delete_product.py --sku F0228 --factory "某工厂" --confirm --update-index
+python 03-data-management/runtime/delete_product.py --sku <SKU> --factory "<Factory_Name>" --confirm --update-index
 ```
 
 删除整个 SKU：
 
 ```bash
-python 03-data-management/runtime/delete_product.py --sku F0228 --confirm --update-index
+python 03-data-management/runtime/delete_product.py --sku <SKU> --confirm --update-index
 ```
 
 删除前同样自动备份。
