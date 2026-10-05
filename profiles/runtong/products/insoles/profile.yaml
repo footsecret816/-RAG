@@ -145,6 +145,10 @@ performance_attributes:
       - "no"
       - light
       - strong
+    keyword:
+      suppress_label_values:
+        - 无支撑
+        - "no"
     column_aliases:
       - Arch_Support
       - 支撑强度
