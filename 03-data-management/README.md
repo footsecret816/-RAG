@@ -127,3 +127,41 @@ PASS
 - `04-search/`：负责根据 Change Set 决定和执行具体检索索引更新
 
 真实 SKU、产品图片、工厂价格、MOQ 等业务数据不进入 GitHub。
+
+
+---
+
+## V1 可执行实现
+
+03 的确定性部分已代码化，位于：
+
+```text
+03-data-management/runtime/
+├─ ingest_table.py
+├─ patch_candidate.py
+├─ validate_candidate.py
+├─ maintenance.py
+├─ delete_product.py
+├─ common.py
+└─ requirements.txt
+```
+
+职责边界：
+
+```text
+程序
+= 表格读取、字段清洗、标准值校验、同SKU多工厂合并、差异比较、
+  空白保护、备份、正式写入、Change Set、调用索引同步
+
+平台LLM
+= 理解产品自然语言描述、提出REVIEW候选
+
+人工
+= 确认REVIEW和实际覆盖/删除意图
+```
+
+因此 V1 不要求再开发一套独立 NLP 模型。
+
+详细运行方法见：
+
+`03-data-management/runtime/README.md`
