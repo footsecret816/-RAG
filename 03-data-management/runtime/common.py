@@ -75,7 +75,7 @@ CATEGORY_DIRS = {
 def _runtime_env_value(logical_name: str) -> str | None:
     runtime = load_company_profile().get("runtime") or {}
     env_spec = runtime.get(logical_name) or {}
-    for key in ("generic", "legacy"):
+    for key in ("legacy", "generic"):
         env_name = str(env_spec.get(key) or "").strip()
         if env_name:
             value = os.getenv(env_name)
