@@ -147,4 +147,26 @@ Q003
 
 ## 当前状态
 
-①②③④⑤ 已完成 V1 测试规则设计。后续随着真实 Product_KB 建立，逐步补充脱敏测试案例、预期结果与回归基线。
+V1 已增加可执行测试层：
+
+```text
+07-tests/runtime/test_core.py
+07-tests/runtime/test_data_management.py
+07-tests/runtime/regression_runner.py
+```
+
+其中真实业务 20～30 条回归题不进入公开 GitHub，建议存放：
+
+```text
+Product_Data/_tests/regression_cases.json
+```
+
+GitHub 只保存模板和执行器。
+
+V1 最终验收标准：
+
+1. 基础单元测试全部通过；
+2. 真实 Product_KB 建库 / 校验通过；
+3. 新增、修改、新工厂、删除等维护流程真实测试通过；
+4. 20～30 条固定业务回归题达到既定预期；
+5. 本地受控文件通过 sync/verify_sync.py 一致性校验。
