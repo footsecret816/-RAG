@@ -183,6 +183,95 @@ def score_soft_conditions(record: dict, request: dict) -> tuple[float | None, in
     return score, high_full, medium_full
 
 
+def _priority_goal_items(request: dict) -> list[dict]:
+    mapping = {"high": 3, "medium": 2, "low": 1}
+    result: list[dict] = []
+    for item in request.get("priority", []) or []:
+        field = str(item.get("field", "")).strip()
+        level = str(item.get("level", "medium")).casefold()
+        goal = str(item.get("goal", "")).casefold()
+        if field and goal in {"min", "max"}:
+            result.append(
+                {
+                    "field": field,
+                    "level": level,
+                    "weight": mapping.get(level, 2),
+                    "goal": goal,
+                }
+            )
+    return result
+
+
+def relative_preference_value(record: dict, preference: dict, candidate_records: list[dict]) -> float:
+    current = _num(get_field(record, preference["field"]))
+    if current is None:
+        return 0.0
+
+    values = [
+        value
+        for candidate in candidate_records
+        if (value := _num(get_field(candidate, preference["field"]))) is not None
+    ]
+    if not values:
+        return 0.0
+
+    low, high = min(values), max(values)
+    if math.isclose(low, high, rel_tol=1e-9, abs_tol=1e-9):
+        return 1.0
+
+    position = (current - low) / (high - low)
+    if preference["goal"] == "min":
+        return max(0.0, min(1.0, 1.0 - position))
+    return max(0.0, min(1.0, position))
+
+
+def score_request(
+    record: dict,
+    request: dict,
+    candidate_records: list[dict],
+) -> tuple[float | None, int, int, list[dict]]:
+    weights = priority_weights(request)
+    numerator = 0.0
+    denominator = 0.0
+    high_full = 0
+    medium_full = 0
+    details: list[dict] = []
+
+    for cond in request.get("soft_conditions", []) or []:
+        field = str(cond.get("field", "")).casefold()
+        weight = weights.get(field, 2)
+        value = soft_match_value(record, cond)
+        numerator += weight * value
+        denominator += weight
+        if value == 1.0:
+            if weight == 3:
+                high_full += 1
+            elif weight == 2:
+                medium_full += 1
+
+    for pref in _priority_goal_items(request):
+        value = relative_preference_value(record, pref, candidate_records)
+        weight = pref["weight"]
+        numerator += weight * value
+        denominator += weight
+        if value >= 0.95:
+            if weight == 3:
+                high_full += 1
+            elif weight == 2:
+                medium_full += 1
+        details.append(
+            {
+                "field": pref["field"],
+                "goal": pref["goal"],
+                "level": pref["level"],
+                "score": value,
+            }
+        )
+
+    score = 100.0 * numerator / denominator if denominator else None
+    return score, high_full, medium_full, details
+
+
 def stars_from_score(score: float | None, exact_match: bool) -> int | None:
     if score is None:
         return None
@@ -223,3 +312,13 @@ def condition_summary(record: dict, request: dict) -> tuple[list[str], list[str]
             unmet.append(text)
 
     return reasons, unmet
+
+
+def preference_summary(preference_details: list[dict]) -> list[str]:
+    reasons: list[str] = []
+    for item in preference_details:
+        if item["score"] < 0.5:
+            continue
+        direction = "越低越好" if item["goal"] == "min" else "越高越好"
+        reasons.append(f"{item['field']} {direction}（{item['level']}优先级）")
+    return reasons
