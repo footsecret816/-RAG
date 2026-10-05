@@ -1,28 +1,10 @@
-# Function Tags / 功能标签
+# Compatibility Pointer
 
-功能标签回答：这款鞋垫能起什么作用？
+润通鞋垫功能标签已迁移到：
 
-## 当前标准标签
+```text
+profiles/runtong/products/insoles/02-function-tags.md
+profiles/runtong/products/insoles/profile.yaml
+```
 
-- 足弓支撑
-- 缓震
-- 回弹
-- 抗疲劳减压
-- 防滑
-- 透气排湿
-- 防臭
-
-## 规则
-
-- 同一 SKU 可以有多个功能标签。
-- 功能标签只描述“有没有这个能力”。
-- 具体强弱由 Performance_Attributes 描述。
-- 不建立重复或高度近似的标准标签。
-
-## 已合并或删除的重复概念
-
-- 矫正支撑 → 并入 足弓支撑
-- 减压 + 抗疲劳 → 合并为 抗疲劳减压
-- 稳定 → 不单独建标签，主要由足弓支撑、后跟杯等性能字段体现
-- 除味 → 统一使用 防臭
-- 透气 + 吸湿排汗 → 统一使用 透气排湿
+`profile.yaml` 是可执行标准值真源。
