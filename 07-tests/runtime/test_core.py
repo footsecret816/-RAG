@@ -11,7 +11,7 @@ RUNTIME = REPO_ROOT / "04-search" / "runtime"
 sys.path.insert(0, str(RUNTIME))
 
 from product_loader import load_product_file
-from ranking import condition_match, score_soft_conditions
+from ranking import condition_match, score_request, score_soft_conditions
 
 
 PRODUCT_MD = """---
@@ -129,6 +129,61 @@ class RankingTests(unittest.TestCase):
         self.assertEqual(score, 100.0)
         self.assertEqual(high_full, 1)
         self.assertEqual(medium_full, 1)
+
+    def test_relative_price_goal_without_soft_conditions(self):
+        expensive = {
+            **self.record,
+            "product_sku": "TEST002",
+            "factory_offer": {
+                **self.record["factory_offer"],
+                "factory_name": "工厂B",
+                "price": 10.0,
+            },
+        }
+        request = {
+            "soft_conditions": [],
+            "priority": [
+                {"field": "Price", "level": "high", "goal": "min"}
+            ],
+        }
+
+        cheap_score, cheap_high, _, _ = score_request(
+            self.record, request, [self.record, expensive]
+        )
+        expensive_score, expensive_high, _, _ = score_request(
+            expensive, request, [self.record, expensive]
+        )
+
+        self.assertEqual(cheap_score, 100.0)
+        self.assertEqual(cheap_high, 1)
+        self.assertEqual(expensive_score, 0.0)
+        self.assertEqual(expensive_high, 0)
+
+    def test_relative_moq_goal_without_soft_conditions(self):
+        high_moq = {
+            **self.record,
+            "product_sku": "TEST003",
+            "factory_offer": {
+                **self.record["factory_offer"],
+                "factory_name": "工厂C",
+                "moq": 5000,
+            },
+        }
+        request = {
+            "soft_conditions": [],
+            "priority": [
+                {"field": "MOQ", "level": "high", "goal": "min"}
+            ],
+        }
+
+        low_score, _, _, _ = score_request(
+            self.record, request, [self.record, high_moq]
+        )
+        high_score, _, _, _ = score_request(
+            high_moq, request, [self.record, high_moq]
+        )
+
+        self.assertGreater(low_score, high_score)
 
 
 if __name__ == "__main__":
