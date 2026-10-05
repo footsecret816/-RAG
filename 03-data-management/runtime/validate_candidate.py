@@ -87,6 +87,15 @@ def validate_product(product: dict[str, Any]) -> list[str]:
             if value not in (None, "") and not isinstance(value, (int, float)):
                 errors.append(f"{sku}/{factory}: {number_field} 必须为数值")
 
+        price_term = offer.get("Price_Term")
+        if price_term not in (None, ""):
+            if not isinstance(price_term, str):
+                errors.append(f"{sku}/{factory}: Price_Term 必须为文本或 null")
+            elif not price_term.strip():
+                errors.append(
+                    f"{sku}/{factory}: Price_Term 不得为空白字符（空白不得覆盖旧值）"
+                )
+
     for item in product.get("Review_Items") or []:
         if item.get("status") not in {"confirmed", "missing_optional", "removed"}:
             errors.append(
