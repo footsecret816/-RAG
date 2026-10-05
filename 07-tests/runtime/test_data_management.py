@@ -137,6 +137,81 @@ class DataManagementTests(unittest.TestCase):
         ]
         self.assertEqual(changed[0]["changed_fields"], ["Price"])
 
+    def test_price_term_is_controlled_optional_field(self):
+        rows = [{
+            "SKU": "T002",
+            "工厂": "工厂A",
+            "材质": "PU",
+            "价格": "6.9",
+            "价格口径": "散装含税含运费",
+            "MOQ": "3000",
+            "尺码体系": "EU",
+            "尺码": "36-46",
+        }]
+        candidate = build_candidate(
+            source=Path("test.xlsx"),
+            rows=rows,
+            default_category="鞋垫",
+            image_dir=None,
+        )
+        offer = candidate["products"][0]["Factory_Offers"][0]
+        self.assertEqual(offer["Price_Term"], "散装含税含运费")
+
+        old = {
+            "Product_Category": "鞋垫",
+            "SKU_ID": "T002",
+            "Main_Image": "main.jpg",
+            "Packaging_Options": [],
+            "Function_Tags": [],
+            "Scenario_Tags": [],
+            "Special_Features": [],
+            "Performance_Attributes": {},
+            "Factory_Offers": [{
+                "Factory_Name": "工厂A",
+                "Material": "PU",
+                "Material_Detail": "PU泡棉",
+                "Price": 6.9,
+                "Price_Term": "散装含税含运费",
+                "MOQ": 3000,
+                "Size_System": "EU",
+                "Size_Range": "36-46",
+            }],
+        }
+
+        blank_candidate = {
+            "Product_Category": "鞋垫",
+            "SKU_ID": "T002",
+            "Performance_Attributes": {},
+            "Factory_Offers": [{
+                "Factory_Name": "工厂A",
+                "Price_Term": None,
+            }],
+        }
+        merged, changes = _merge_candidate(old, blank_candidate)
+        self.assertEqual(merged["Factory_Offers"][0]["Price_Term"], "散装含税含运费")
+        term_changes = [
+            c for c in changes
+            if c.get("factory_name") == "工厂A" and c.get("change_type") == "update"
+        ]
+        self.assertEqual(term_changes, [])
+
+        updated_candidate = {
+            "Product_Category": "鞋垫",
+            "SKU_ID": "T002",
+            "Performance_Attributes": {},
+            "Factory_Offers": [{
+                "Factory_Name": "工厂A",
+                "Price_Term": "含税不含运费",
+            }],
+        }
+        merged2, changes2 = _merge_candidate(old, updated_candidate)
+        self.assertEqual(merged2["Factory_Offers"][0]["Price_Term"], "含税不含运费")
+        updated = [
+            c for c in changes2
+            if c.get("factory_name") == "工厂A" and c.get("change_type") == "update"
+        ]
+        self.assertEqual(updated[0]["changed_fields"], ["Price_Term"])
+
     def test_new_factory_is_incremental(self):
         old = {
             "Product_Category": "鞋垫",
