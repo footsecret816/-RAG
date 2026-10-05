@@ -1,0 +1,177 @@
+id: insoles
+
+product_category:
+  canonical: 鞋垫
+  aliases:
+    - 鞋垫
+    - insole
+    - insoles
+  directory: insoles
+
+materials:
+  allowed:
+    - 记忆棉
+    - PU
+    - EVA
+    - Gel
+    - PORON
+    - 乳胶
+    - Haipoli
+    - TPU
+    - TPE
+    - PE Foam
+  aliases:
+    memory foam: 记忆棉
+    memory sponge: 记忆棉
+    慢回弹海绵: 记忆棉
+    慢回弹泡棉: 记忆棉
+    记忆棉: 记忆棉
+    polyurethane: PU
+    聚氨酯: PU
+    pu foam: PU
+    pu: PU
+    eva: EVA
+    gel: Gel
+    poron: PORON
+    latex: 乳胶
+    乳胶: 乳胶
+    haipoli: Haipoli
+    海波丽: Haipoli
+    tpu: TPU
+    tpe: TPE
+    pe foam: PE Foam
+    pe: PE Foam
+
+size_systems:
+  allowed:
+    - EU
+    - US
+    - UK
+    - Alpha
+  aliases:
+    eu: EU
+    欧码: EU
+    us: US
+    美码: US
+    uk: UK
+    英码: UK
+    alpha: Alpha
+    字母: Alpha
+    字母尺码: Alpha
+
+tags:
+  function:
+    - 足弓支撑
+    - 缓震
+    - 回弹
+    - 抗疲劳减压
+    - 防滑
+    - 透气排湿
+    - 防臭
+  scenario:
+    - 日常
+    - 长距离行走
+    - 长时间站立
+    - 长时间站立 / 工作
+    - 长时间站立/工作
+    - 劳保 / 安全鞋
+    - 劳保/安全鞋
+    - 跑步
+    - 篮球
+    - 足球
+    - 健身 / 训练
+    - 健身/训练
+    - 综合运动
+    - 户外徒步
+    - 登山 / 越野
+    - 登山/越野
+    - 休闲 / 皮鞋
+    - 休闲/皮鞋
+    - 紧脚鞋
+  special:
+    - 防穿刺
+    - 防静电
+    - ESD
+    - 绝缘
+
+performance_attributes:
+  Cushioning:
+    label: 缓震
+    type: number
+    min: 1
+    max: 5
+    column_aliases:
+      - Cushioning
+      - 缓震性
+      - 缓震
+  Elasticity:
+    label: 回弹
+    type: number
+    min: 1
+    max: 5
+    column_aliases:
+      - Elasticity
+      - 回弹性
+      - 回弹
+  Softness:
+    label: 软硬
+    type: number
+    min: 1
+    max: 5
+    column_aliases:
+      - Softness
+      - 软硬度
+      - 软硬
+  Arch_Height:
+    label: 足弓高度
+    type: enum
+    allowed:
+      - 低
+      - 中
+      - 高
+      - low
+      - medium
+      - high
+    column_aliases:
+      - Arch_Height
+      - 足弓高度
+  Arch_Support:
+    label: 足弓支撑
+    type: enum
+    allowed:
+      - 无支撑
+      - 轻度支撑
+      - 强支撑
+      - no
+      - light
+      - strong
+    column_aliases:
+      - Arch_Support
+      - 支撑强度
+      - 足弓支撑强度
+  Heel_Cup_Depth:
+    label: 后跟杯深度
+    type: enum
+    allowed:
+      - 平
+      - 浅
+      - 中
+      - 深
+      - flat
+      - shallow
+      - medium
+      - deep
+    column_aliases:
+      - Heel_Cup_Depth
+      - 后跟杯深度
+
+display_fields:
+  - Material
+  - Cushioning
+  - Elasticity
+  - Softness
+  - Arch_Support
+  - Arch_Height
+  - Heel_Cup_Depth
+  - Size_Range
+  - Special_Features
