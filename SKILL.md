@@ -32,6 +32,22 @@ GitHub 只保存：
 
 ---
 
+## Profile 边界
+
+查询或维护前先读取：
+
+```text
+profiles/active-profile.yaml
+→ 当前 Company Profile
+→ 当前 Product Profile
+```
+
+公司名、产品材质、功能、场景、性能字段、自然语言映射、展示字段不得写死在 Base Skill；这些信息只来自 Profile。
+
+当前默认 Profile 仍是润通 + 鞋垫，因此润通现有业务效果保持不变。
+
+---
+
 ## 当前 V1 可执行检索架构
 
 ```text
@@ -83,7 +99,7 @@ Product_Data/
 推荐设置环境变量：
 
 ```text
-RUNTONG_PRODUCT_DATA=<Product_Data绝对路径>
+PRODUCT_DATA_ROOT=<Product_Data绝对路径>
 ```
 
 ### 第一步：检查运行环境
@@ -154,7 +170,7 @@ Agent 不得绕过检索结果重新凭感觉挑产品。
 
 查询标准化特别规则：
 
-- “每天站8小时，想脚底没那么累”不能只留给向量；应尽量映射为“长时间站立 + 缓震 / 抗疲劳减压”等软条件，同时保留原始模糊语义给向量；
+- 能可靠映射到当前 Product Profile 的场景 / 功能 / 性能先结构化，同时保留必要的原始模糊语义给向量；
 - “MOQ越低越好”使用 `{"field":"MOQ","level":"high","goal":"min"}`；
 - “价格贵一点没关系”可使用 `{"field":"Price","level":"low","goal":"min"}`；
 - priority.goal 即使没有 soft_conditions，也会进入本次匹配分和排序。
