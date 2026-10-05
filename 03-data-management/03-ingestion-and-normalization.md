@@ -24,6 +24,7 @@ V1 输入范围固定为：
 - 产品特性描述
 - MOQ
 - Price
+- 价格口径 / Price_Term（如有）
 - Factory_Name
 
 实际列名可以不同，但必须能稳定映射到 01 Schema 中的标准字段。
@@ -160,10 +161,17 @@ Validation = PASS
 - Factory_Name
 - MOQ
 - Price
+- Price_Term（价格口径；AUTO，有则原样保留）
 - Material_Detail
 - Size_Range
 
 只允许做格式清洗，不得改变原始事实。
+
+`Price_Term` 属于 Factory Offer 层可选字段：
+
+- 原始资料有口径 → 原样保留；
+- 原始资料无口径或为空白 → 保持 `null`，不得猜测，也不得覆盖已有正式值；
+- 不进入语义文本，默认不参与搜索排序（见 `04-search/05-semantic-text-and-vector.md`）。
 
 例如：
 
